@@ -26,9 +26,8 @@ const App: React.FC = () => {
     <div className='app'>
       <main className='grid'>
         <nav className='nav'>
-          <div>menu1</div>
-          <div>menu2</div>
-          <div>menu3</div>
+          <div>🏋️</div>
+          <div>settings</div>
         </nav>
         <WeightInput />
         <BarbellCanvas dimension={dimension} />

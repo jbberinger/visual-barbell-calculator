@@ -1,11 +1,24 @@
-@import url("https://fonts.googleapis.com/css?family=Titillium+Web:300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans&display=swap");
 
 html,
 body {
-  font-family: "Titillium Web", sans-serif;
+  font-family: "Noto Sans", sans-serif;
   margin: 0;
   padding: 0;
   background: #e0e0e0;
+  font-size: 16px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 0.9em;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .app {
@@ -28,11 +41,12 @@ body {
 .nav {
   grid-area: nav;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   color: #e0e0e0;
   background: #424242;
   height: 100%;
+  padding: 0 5px;
 }
 
 .weights-container {
@@ -43,32 +57,14 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  .total-weight {
-    grid-column: 1/3 span;
-  }
-  h1 {
-    font-size: 4em;
-  }
-  h1,
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  .input-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
 }
 
-.input {
-  width: 2em;
-  text-align: center;
-  font-size: 3em;
+@mixin input-styling {
   padding: 0;
   margin: 0;
   outline: 0;
+  border: 0;
+  border-radius: 0;
   background: transparent;
   &::placeholder {
     opacity: 1;
@@ -79,6 +75,49 @@ body {
   }
   &:active::placeholder {
     opacity: 0;
+  }
+}
+
+.total-input-card {
+  grid-column: 1/3 span;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  padding: 10px 0;
+  .total-input {
+    z-index: 0;
+    @include input-styling;
+    width: 100%;
+    margin: 0 60px;
+    font-size: 3em;
+    text-align: center;
+    border-bottom: 0.5px solid #777;
+  }
+  .total-unit {
+    position: absolute;
+    right: 0;
+    padding-right: 20px;
+    z-index: 1;
+    align-self: flex-end;
+    font-size: 2em;
+    padding-bottom: 5px;
+  }
+}
+
+.input-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .input {
+    @include input-styling;
+    width: 2em;
+    text-align: center;
+    font-size: 2em;
+  }
+  .input-unit {
+    font-size: 0.9em;
   }
 }
 
