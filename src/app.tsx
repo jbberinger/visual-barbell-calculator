@@ -9,12 +9,13 @@ const App: React.FC = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
-  const dimension = new Dimension(15);
+  const barWidthFromScreenWidth = (width: number): number => width * (15 / 320);
+  const dimension = new Dimension(barWidthFromScreenWidth(screenWidth));
 
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
-      dimension.update(15);
+      dimension.update(barWidthFromScreenWidth(screenWidth));
     }
     window.addEventListener('resize', handleResize);
     return () => {
@@ -30,7 +31,10 @@ const App: React.FC = () => {
           <div>settings</div>
         </nav>
         <WeightInput />
-        <BarbellCanvas dimension={dimension} />
+        <BarbellCanvas
+          dimension={dimension}
+          screenWidth={screenWidth}
+        />
       </main>
     </div>
   );

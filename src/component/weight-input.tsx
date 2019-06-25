@@ -1,9 +1,15 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import color from '../util/color'
 
 const WeightInput: React.FC = () => {
   const kgPlateWeights: number[] = [25, 20, 15, 10, 5, 2.5, 1.25, 0.5, 0.25];
   const kgColors: string[] = Object.values(color.plates.kg);
+  kgColors[2] = color.adjustLuminosity(kgColors[2], -5);
+  kgColors[4] = 'white'
+  kgColors[6] = color.adjustLuminosity(kgColors[6], -15);
+  kgColors[7] = color.adjustLuminosity(kgColors[7], -15);
+  kgColors[8] = color.adjustLuminosity(kgColors[8], -15);
+
   let initialState: { [index: number]: number } = {};
 
   const [weightCount, setWeightCount] = useState({
@@ -68,7 +74,7 @@ const InputCard: React.FC<InputCardPropsType> = ({ weight, color, count, handleI
         onChange={handleInput}
         name={`${weight}`}
       />
-      <h3>{weight}<span className='input-unit'>kg</span></h3>
+      <h3>{weight}<span className='input-unit'></span></h3>
     </div >
   )
 }

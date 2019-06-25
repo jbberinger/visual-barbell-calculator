@@ -2,11 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import Dimension from '../util/dimension';
 import color from '../util/color';
 
-type BBCanvas = {
+type BBCanvasType = {
   dimension: Dimension,
+  screenWidth: number,
 }
 
-const BarbellCanvas: React.FC<BBCanvas> = ({ dimension }) => {
+const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   /**
@@ -156,8 +157,8 @@ const BarbellCanvas: React.FC<BBCanvas> = ({ dimension }) => {
       <canvas
         ref={canvasRef}
         className='barbell-canvas'
-        height={300}
-        width={300}
+        height={Math.round(screenWidth * (300 / 320))}
+        width={Math.round(screenWidth * (300 / 320))}
       />
     </div>
   )
