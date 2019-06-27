@@ -17,6 +17,19 @@ const color = {
       silver0point25: 'hsl(0, 0%, 75.3%)',
     }
   },
+  inputText: {
+    kg: {
+      red25: 'hsl(8, 51.8%, 50.4%)',
+      blue20: 'hsl(219, 46.8%, 39.8%)',
+      yellow15: 'hsl(53, 100%, 39.7%)',
+      green10: 'hsl(163, 60%, 27.5%)',
+      white5: 'hsl(0, 0%, 100%)',
+      gray2point5: 'hsl(0, 0%, 29.4%)',
+      silver1point25: 'hsl(0, 0%, 60.3%)',
+      silver0point5: 'hsl(0, 0%, 60.3%)',
+      silver0point25: 'hsl(0, 0%, 60.3%)',
+    },
+  },
   // Takes an hsl string and adjusts its luminosity
   adjustLuminosity: (hslColor: string, delta: number): string => {
     let arr = hslColor.split(', ');

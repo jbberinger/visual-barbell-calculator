@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './style/app.scss';
 import Dimension from './util/dimension';
 import BarbellCanvas from './component/barbell-canvas';
-import WeightInput from './component/weight-input';
+import Calculator from './component/calculator';
+import { CalculatorProvider } from './context/calculator-context';
 
 const App: React.FC = () => {
 
@@ -24,19 +25,21 @@ const App: React.FC = () => {
   })
 
   return (
-    <div className='app'>
-      <main className='grid'>
-        <nav className='nav'>
-          <div>🏋️</div>
-          <div>settings</div>
-        </nav>
-        <WeightInput />
-        <BarbellCanvas
-          dimension={dimension}
-          screenWidth={screenWidth}
-        />
-      </main>
-    </div>
+    <CalculatorProvider>
+      <div className='app'>
+        <main className='grid'>
+          <nav className='nav'>
+            <div>🏋️</div>
+            <div>settings</div>
+          </nav>
+          <Calculator />
+          <BarbellCanvas
+            dimension={dimension}
+            screenWidth={screenWidth}
+          />
+        </main>
+      </div>
+    </CalculatorProvider>
   );
 }
 
