@@ -35,6 +35,7 @@ class Dimension {
     relCollarKnobLength: 0,
     relCollarPinHeight: 0,
     relCollarPinLength: 0,
+    relCollarTotalLength: 0,
   }
 
   // Plate dimensions in mm
@@ -65,7 +66,7 @@ class Dimension {
     const {
       barDiameter, sleeveDiameter, sleeveLength, flangeDiameter, flangeWidth,
       collarBigDiameter, collarSmallDiameter, collarPinLength, collarPinHeight,
-      collarBigLength, collarSmallLength, collarKnobHeight, collarKnobLength
+      collarBigLength, collarSmallLength, collarKnobHeight, collarKnobLength,
     } = this.barbellDimensions;
 
     const rbbd = this.relBarbellDimensions;
@@ -83,6 +84,7 @@ class Dimension {
     rbbd.relCollarKnobLength = rbbd.relBarDiameter * (collarKnobLength / barDiameter);
     rbbd.relCollarPinHeight = rbbd.relBarDiameter * (collarPinHeight / barDiameter);
     rbbd.relCollarPinLength = rbbd.relBarDiameter * (collarPinLength / barDiameter);
+    rbbd.relCollarTotalLength = rbbd.relCollarSmallLength + rbbd.relCollarBigLength;
 
     // Updates plate dimensions
     const kgPlateDimensions = this.plateDimensions.kg;

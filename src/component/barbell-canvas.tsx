@@ -22,7 +22,7 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       relFlangeDiameter, relFlangeWidth, relSleevePlusFlange,
       relCollarBigDiameter, relCollarBigLength, relCollarSmallDiameter,
       relCollarSmallLength, relCollarKnobHeight, relCollarKnobLength,
-      relCollarPinHeight, relCollarPinLength,
+      relCollarPinHeight, relCollarPinLength, relCollarTotalLength,
     } = dimension.relBarbellDimensions;
 
     const strokeAndFillRect = (ctx: CanvasRenderingContext2D, c: string, x: number, y: number, w: number, h: number) => {
@@ -77,28 +77,81 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         Math.round(relFlangeDiameter)
       );
 
-      // finds total diameter (offset) for plates on bar and draws them
-      // in reverse order to minimize color bleeding
-      let plateOffset: number = 0;
+      // finds total diameter (offset) for plates and collar and
+      // draws them in reverse order to minimize color bleeding
       let kgColors = Object.values(color.plates.kg)
       const kgPlateWidths = dimension.plateDimensions.kg.kgPlateWidths;
       const plateCounts = calculatorState.plateCounts;
+      let offset: number = 0;
+      // adds plate widths to offset
       for (let plateIndex = 0; plateIndex < kgPlateWeights.length; plateIndex += 1) {
-        plateOffset += Math.round(kgPlateWidths[plateIndex]) * (plateCounts[kgPlateWeights[plateIndex]] / 2);
+        offset += Math.round(kgPlateWidths[plateIndex]) * (plateCounts[kgPlateWeights[plateIndex]] / 2);
       }
+      // // adds collar length to offset
+      // offset += relCollarTotalLength;
+      ////////////////////////
+      /// START COLLAR TESTING
+      // Draws main part of collar
+      strokeAndFillRect(
+        ctx,
+        color.barbell.collarMetal,
+        Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength, canvasWidth)),
+        Math.round(offsetY(relCollarBigDiameter, canvasHeight)),
+        Math.round(relCollarBigLength),
+        Math.round(relCollarBigDiameter)
+      );
+      // draws large portion of collar
+      strokeAndFillRect(
+        ctx,
+        color.barbell.collarMetal,
+        Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength, canvasWidth)),
+        Math.round(offsetY(relCollarBigDiameter, canvasHeight)),
+        Math.round(relCollarBigLength),
+        Math.round(relCollarBigDiameter)
+      );
+      // draws small portion of collar
+      strokeAndFillRect(
+        ctx,
+        color.barbell.collarMetal,
+        Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarTotalLength, canvasWidth)),
+        Math.round(offsetY(relCollarSmallDiameter, canvasHeight)),
+        Math.round(relCollarSmallLength),
+        Math.round(relCollarSmallDiameter)
+      );
+      // draws collar pin
+      strokeAndFillRect(
+        ctx,
+        color.barbell.collarMetal,
+        Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength + relCollarKnobLength + relCollarPinLength * 0.28, canvasWidth)),
+        Math.round(offsetY(relCollarBigDiameter + relCollarKnobHeight + relCollarPinHeight, canvasHeight)),
+        Math.round(relCollarPinLength),
+        Math.round(relCollarPinHeight)
+      );
+      // draws knob
+      strokeAndFillRect(
+        ctx,
+        color.barbell.collarMetal,
+        Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength / 2 + relCollarKnobLength / 2, canvasWidth)),
+        Math.round(offsetY(relCollarBigDiameter + relCollarKnobHeight * 2, canvasHeight)),
+        Math.round(relCollarKnobLength),
+        Math.round(relCollarKnobHeight)
+      );
+      /// END COLLAR TESTING
+      //////////////////////
       // draws plates in reverse order to prevent color bleeding
+      console.log(`offset: ${offset}`);
       for (let plateIndex = kgPlateWeights.length - 1; plateIndex >= 0; plateIndex -= 1) {
         let platesToDraw = plateCounts[kgPlateWeights[plateIndex]] / 2;
-        while (platesToDraw > 0) {
+        while (platesToDraw > 0 && offset > 0) {
           strokeAndFillRect(
             ctx,
             kgColors[plateIndex],
-            Math.round(offsetX(relBarLength + relFlangeWidth + plateOffset, canvasWidth)),
+            Math.round(offsetX(relBarLength + relFlangeWidth + offset, canvasWidth)),
             Math.round(offsetY(dimension.plateDimensions.kg.kgPlateDiameters[plateIndex], canvasHeight)),
             Math.round(dimension.plateDimensions.kg.kgPlateWidths[plateIndex]),
             Math.round(dimension.plateDimensions.kg.kgPlateDiameters[plateIndex])
           );
-          plateOffset -= Math.round(dimension.plateDimensions.kg.kgPlateWidths[plateIndex]);
+          offset -= Math.round(dimension.plateDimensions.kg.kgPlateWidths[plateIndex]);
           platesToDraw -= 1;
         }
       }
