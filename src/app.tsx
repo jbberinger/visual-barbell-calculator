@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const barWidthFromScreenWidth = (width: number): number => width * (15 / 320);
   const dimension = new Dimension(barWidthFromScreenWidth(screenWidth));
 
+  // Updates dimensions relative to screen width
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);

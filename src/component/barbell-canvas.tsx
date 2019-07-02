@@ -9,14 +9,12 @@ type BBCanvasType = {
   screenWidth: number,
 }
 
+// Draws loaded barbell to scale
 const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);
   const [optionsState, setOptionsState, warning, setWarning] = useContext(SettingsContext);
 
-  /**
-   * Consider writing custom 'draw' hook
-   */
   useEffect(() => {
 
     const {
@@ -27,6 +25,7 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       relCollarPinHeight, relCollarPinLength, relCollarTotalLength,
     } = dimension.relBarbellDimensions;
 
+    // Draws rectangle and strokes a dark outline to distinguish shapes
     const strokeAndFillRect = (ctx: CanvasRenderingContext2D, c: string, x: number, y: number, w: number, h: number) => {
       ctx.fillStyle = c;
       ctx.fillRect(x, y, w, h);

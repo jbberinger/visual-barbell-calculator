@@ -1,8 +1,6 @@
 import React, { useState, createContext } from 'react'
 import { WeightUnit } from './settings-context';
 
-// Set up constants, types, and initial states //
-
 export const kgPlateWeights: string[] = ['50', '25', '20', '15', '10', '5', '2.5', '1.25', '0.5', '0.25'];
 export const lbPlateWeights: string[] = ['55', '45', '35', '25', '15', '10', '5', '2.5', '1', '0.75', '0.5', '0.25'];
 
