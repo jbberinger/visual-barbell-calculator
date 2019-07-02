@@ -2,13 +2,12 @@
 
 $background-color: #dadada;
 
-
 html,
 body {
   font-family: "Noto Sans", sans-serif;
   margin: 0;
   padding: 0;
-  background: #dadada;
+  background: $background-color;
   font-size: 16px;
 }
 
@@ -55,12 +54,12 @@ h3 {
   width: 100%;
   padding: 0;
   margin: 0;
-  .nav-button{
+  .nav-button {
     background: none;
     border: none;
     padding: none;
     margin: none;
-    color: #e0e0e0
+    color: #e0e0e0;
   }
 }
 
