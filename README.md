@@ -8,7 +8,7 @@
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
 
-### To-do:
+### To-do
 
 - [x] Two-way binding between total weight and plate counts
 - [x] Barbell animation reacts to all calculator inputs
@@ -22,5 +22,5 @@
 - [ ] Optimize UI for desktop
 - [ ] Replace Canvas rect shapes with custom rounded-rect shapes
 
-
-![Imgur](https://i.imgur.com/IyQgybQ.png)
+### Preview
+<img src="https://i.imgur.com/IyQgybQ.png" width="300">
