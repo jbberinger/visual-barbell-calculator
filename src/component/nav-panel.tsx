@@ -2,11 +2,10 @@ import React, { useRef, useState, useEffect, useContext, MouseEvent } from 'reac
 import { CalculatorContext } from '../context/calculator-context';
 import { WeightUnit } from '../context/settings-context';
 
-
-
+// Navigation for switching between weight units and triggering the settings drawer animation
 const NavPanel: React.FC = () => {
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [ currentWeightUnit, setCurrentWeightUnit] = useContext(CalculatorContext);
+  const [currentWeightUnit, setCurrentWeightUnit] = useContext(CalculatorContext);
 
   const handleWeightUnitButton = (event: MouseEvent<HTMLButtonElement>) => {
     const id: string | null = event.currentTarget.getAttribute('id');

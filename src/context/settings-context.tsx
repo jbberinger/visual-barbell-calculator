@@ -1,5 +1,7 @@
 import React, { useState, createContext } from 'react'
 
+// This context stores the settings state
+
 export enum WeightUnit {
   KG,
   LB

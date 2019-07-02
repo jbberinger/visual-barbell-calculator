@@ -44,7 +44,7 @@ class Dimension {
     // Weight reference (kg): [50, 25, 15, 10, 5, 2.5, 1.25, 0.5, 0.25]
     kg: {
       kgPlateDiameters: [450, 450, 400, 400, 325, 228, 190, 160, 134, 112],
-      kgPlateWidths: [65, 26, 22, 22, 22, 21, 16, 12, 8, 7],
+      kgPlateWidths: [50, 26, 22, 22, 22, 21, 16, 12, 8, 7],
     },
     // Rogue calibrated lb steel plate dimensions
     // Weight reference (lb): [55, 45, 35, 25, 10, 5, 2.5, 1, 0.5, 0.25]
