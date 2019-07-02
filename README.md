@@ -20,3 +20,4 @@
   - [ ] Specify barbell and collar weights
   - [ ] Specify number of plates available
 - [ ] Optimize UI for desktop
+- [ ] Replace Canvas rect shapes with custom rounded-rect shapes
