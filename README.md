@@ -1,4 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/abaa91d3-0289-4252-988c-9433a93a236d/deploy-status)](https://app.netlify.com/sites/sharp-leakey-173f74/deploys)
+
+[Live Build](https://sharp-leakey-173f74.netlify.com/)
 # Visual Barbell Calculator 🏋 🏋️‍♀️
 
 ## A modern barbell calculator for the web
