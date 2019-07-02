@@ -7,7 +7,7 @@ const SettingsPanel: React.FC<any> = () => {
 
   return (
     <div className='settings-panel'>
-      {JSON.stringify(optionsState.plates.)}
+      Settings Panel
     </div>
   );
 }
