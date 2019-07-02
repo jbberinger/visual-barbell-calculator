@@ -1,14 +1,18 @@
 import React, { ChangeEvent, useContext, useState } from 'react';
 import color from '../util/color'
-import { CalculatorContext, plateCountType } from '../context/calculator-context';
+import { CalculatorContext, plateCountType, kgPlateWeights, lbPlateWeights } from '../context/calculator-context';
+import { SettingsContext, WeightUnit } from '../context/settings-context';
 
 const Calculator: React.FC = () => {
   const kgInputColors: string[] = Object.values(color.inputText.kg);
-  const [kgPlateWeights, calculatorState, setCalculatorState] = useContext(CalculatorContext);
+  const lbInputColors: string[] = Object.values(color.inputText.lb);
+  const [calculatorState, setCalculatorState] = useContext(CalculatorContext);
+  const [optionsState, setOptionsState, warning, setWarning] = useContext(SettingsContext);
 
   // holds local state for inputs
   const [totalDisplay, setTotalDisplay] = useState('');
   const [plateDisplay, setPlateDisplay] = useState({ ...calculatorState.plateCounts });
+  const [weightUnitDisplay, setWeightUnitDisplay] = useState(WeightUnit.KG);
 
   // handles plate count inputs
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -107,12 +111,12 @@ const Calculator: React.FC = () => {
           style={{ caretColor: 'black' }}
           onChange={handleTotalInput}
         />
-        <span className='total-unit'>kg</span>
+        {/* <span className='total-unit'>kg</span> */}
       </div>
       {
-        kgPlateWeights.map((w: number, i: number) => (
+        kgPlateWeights.map((w: string, i: number) => (
           <InputCard
-            weight={w}
+            weight={parseFloat(w)}
             color={plateDisplay[w] > 0 ? kgInputColors[i] : ''}
             count={plateDisplay[w]}
             handleInput={handlePlateInput}

@@ -3,7 +3,10 @@ import './style/app.scss';
 import Dimension from './util/dimension';
 import BarbellCanvas from './component/barbell-canvas';
 import Calculator from './component/calculator';
+import SettingsPanel from './component/settings-panel';
+import NavPanel from './component/nav-panel';
 import { CalculatorProvider } from './context/calculator-context';
+import { SettingsProvider } from './context/settings-context';
 
 const App: React.FC = () => {
 
@@ -22,24 +25,24 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     }
-  })
+  }, [screenWidth, dimension]);
 
   return (
-    <CalculatorProvider>
-      <div className='app'>
-        <main className='grid'>
-          <nav className='nav'>
-            <div>🏋️</div>
-            <div>settings</div>
-          </nav>
-          <Calculator />
-          <BarbellCanvas
-            dimension={dimension}
-            screenWidth={screenWidth}
-          />
-        </main>
-      </div>
-    </CalculatorProvider>
+    <SettingsProvider>
+      <CalculatorProvider>
+        <div className='app'>
+          <NavPanel />
+          <main className='grid'>
+            <SettingsPanel />
+            <Calculator />
+            <BarbellCanvas
+              dimension={dimension}
+              screenWidth={screenWidth}
+            />
+          </main>
+        </div>
+      </CalculatorProvider>
+    </SettingsProvider>
   );
 }
 
