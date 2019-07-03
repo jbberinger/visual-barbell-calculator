@@ -54,12 +54,23 @@ h3 {
   width: 100%;
   padding: 0;
   margin: 0;
-  .nav-button {
+  color: $background-color;
+  .nav-unit-radio,
+  label,
+  button {
+    cursor: pointer;
+  }
+  button {
     background: none;
     border: none;
-    padding: none;
-    margin: none;
-    color: #e0e0e0;
+    color: $background-color;
+    font-size: 1em;
+  }
+  .nav-unit-radio {
+    display: none;
+  }
+  label {
+    padding: 0 10px;
   }
 }
 

@@ -19,7 +19,6 @@ export enum Warning {
 // equipment: barbell/collar weights and if collar is used
 // plates: number of plates available and if plate is used
 const initialOptionsState = {
-  weightUnit: WeightUnit.KG,
   equipment: {
     barbell: {
       weights: {
@@ -37,88 +36,28 @@ const initialOptionsState = {
   },
   plates: {
     kgPlates: {
-      '50': {
-        use: false,
-        count: 20
-      },
-      '25': {
-        use: true,
-        count: 20
-      },
-      '15': {
-        use: true,
-        count: 20
-      },
-      '10': {
-        use: true,
-        count: 20
-      },
-      '5': {
-        use: true,
-        count: 20
-      },
-      '2.5': {
-        use: true,
-        count: 20
-      },
-      '1.25': {
-        use: true,
-        count: 20
-      },
-      '0.5': {
-        use: false,
-        count: 20
-      },
-      '0.25': {
-        use: false,
-        count: 20
-      },
+      '50': 0,
+      '25': 20,
+      '15': 20,
+      '10': 20,
+      '5': 20,
+      '2.5': 20,
+      '1.25': 20,
+      '0.5': 0,
+      '0.25': 0,
     },
     lbPlates: {
-      '55': {
-        use: false,
-        count: 20
-      },
-      '45': {
-        use: true,
-        count: 20
-      },
-      '35': {
-        use: true,
-        count: 20
-      },
-      '25': {
-        use: true,
-        count: 20
-      },
-      '10': {
-        use: true,
-        count: 20
-      },
-      '5': {
-        use: true,
-        count: 20
-      },
-      '2.5': {
-        use: true,
-        count: 20
-      },
-      '1.25': {
-        use: true,
-        count: 20
-      },
-      '0.75': {
-        use: false,
-        count: 20
-      },
-      '0.5': {
-        use: false,
-        count: 20
-      },
-      '0.25': {
-        use: false,
-        count: 20
-      },
+      '55': 0,
+      '45': 20,
+      '35': 20,
+      '25': 20,
+      '10': 20,
+      '5': 20,
+      '2.5': 20,
+      '1.25': 0,
+      '0.75': 0,
+      '0.5': 0,
+      '0.25': 0,
     },
   }
 }
@@ -130,10 +69,11 @@ export const SettingsContext = createContext<initialOptionsStateType | any>(unde
 export const SettingsProvider = (props: any) => {
   const [optionsState, setOptionsState] = useState<initialOptionsStateType>(initialOptionsState);
   const [warning, setWarning] = useState<Warning>();
+  const [curentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
 
   return (
     <SettingsContext.Provider
-      value={[optionsState, setOptionsState, warning, setWarning]}>
+      value={[optionsState, setOptionsState, warning, setWarning, curentWeightUnit, setCurrentWeightUnit]}>
       {props.children}
     </SettingsContext.Provider>
   );
