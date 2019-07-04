@@ -117,19 +117,17 @@ h3 {
     z-index: 0;
     @include input-styling;
     width: 100%;
-    margin: 0 60px;
+    margin-left: 60px;
     font-size: 3em;
     text-align: center;
     border-bottom: 0.5px solid #777;
   }
   .total-unit {
-    position: absolute;
+    position: relative;
     right: 0;
-    padding-right: 20px;
-    z-index: 1;
-    align-self: flex-end;
     font-size: 2em;
-    padding-bottom: 5px;
+    min-width: 60px;
+    text-align: left;
   }
 }
 
@@ -143,6 +141,8 @@ h3 {
     width: 2em;
     text-align: center;
     font-size: 2em;
+    // border-bottom: 0.5px solid #777;
+    // margin-bottom: 5px;
   }
   .input-unit {
     font-size: 0.9em;

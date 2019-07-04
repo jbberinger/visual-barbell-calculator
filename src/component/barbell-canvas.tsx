@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import Dimension from '../util/dimension';
 import color from '../util/color';
-import { CalculatorContext, plateCountType, kgPlateWeights } from '../context/calculator-context';
-import { SettingsContext, Warning } from '../context/settings-context';
+import { CalculatorContext, plateCountType } from '../context/calculator-context';
+import { SettingsContext, Warning, WeightUnit } from '../context/settings-context';
 
 type BBCanvasType = {
   dimension: Dimension,
@@ -13,10 +13,9 @@ type BBCanvasType = {
 const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);
-  const [optionsState, setOptionsState, warning, setWarning] = useContext(SettingsContext);
+  const [optionsState, setOptionsState, warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
 
   useEffect(() => {
-
     const {
       relBarDiameter, relSleeveDiameter, relSleeveLength,
       relFlangeDiameter, relFlangeWidth, relSleevePlusFlange,
@@ -57,7 +56,6 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         Math.round(canvasWidth - relSleevePlusFlange),
         Math.round(relBarDiameter)
       );
-
       // Draws sleeve.
       strokeAndFillRect(
         ctx,
@@ -67,7 +65,6 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         Math.round(relSleeveLength),
         Math.round(relSleeveDiameter)
       );
-
       // Draws flange.
       strokeAndFillRect(
         ctx,
@@ -78,14 +75,26 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         Math.round(relFlangeDiameter)
       );
 
-      let kgColors = Object.values(color.plates.kg)
-      const { kgPlateWidths, kgPlateDiameters } = dimension.plateDimensions.kg;
+      let colors: any;
+      let widths: any;
+      let diameters: any;
+      if (currentWeightUnit == WeightUnit.KG) {
+        colors = color.plates.kg;
+        widths = dimension.relPlateDimensions.kg.relKgPlateWidths;
+        diameters = dimension.relPlateDimensions.kg.relKgPlateDiameters;
+      } else {
+        colors = color.plates.lb;
+        widths = dimension.relPlateDimensions.lb.relLbPlateWidths;
+        diameters = dimension.relPlateDimensions.lb.relLbPlateDiameters;
+      }
+
       const plateCounts = calculatorState.plateCounts;
       let offset: number = 0;
       // Finds total diameter (offset) for plates and collar so they can
       // be drawn in reverse order (left to right) to minimize color bleeding.
-      for (let plateIndex = 0; plateIndex < kgPlateWeights.length; plateIndex += 1) {
-        offset += Math.round(kgPlateWidths[plateIndex]) * (plateCounts[kgPlateWeights[plateIndex]] / 2);
+      for (const plate in plateCounts) {
+        let offsetWidth = Math.round(widths[plate]) * plateCounts[plate] / 2;
+        offset += offsetWidth ? offsetWidth : 0;
       }
 
       // Warns user there is no room left on the bar.
@@ -131,19 +140,19 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       );
 
       // Draws plates in reverse order to prevent color bleeding.
-      console.log(`offset: ${offset}`);
-      for (let plateIndex = kgPlateWeights.length - 1; plateIndex >= 0; plateIndex -= 1) {
-        let platesToDraw = plateCounts[kgPlateWeights[plateIndex]] / 2;
+      const plateWeight = [...Object.keys(plateCounts).sort((a, b) => parseFloat(b) - parseFloat(a))];
+      for (let plateIndex = plateWeight.length - 1; plateIndex >= 0; plateIndex -= 1) {
+        let platesToDraw = plateCounts[plateWeight[plateIndex]] / 2;
         while (platesToDraw > 0 && offset > 0) {
           strokeAndFillRect(
             ctx,
-            kgColors[plateIndex],
+            colors[plateWeight[plateIndex].toString()],
             Math.round(offsetX(relBarLength + relFlangeWidth + offset, canvasWidth)),
-            Math.round(offsetY(kgPlateDiameters[plateIndex], canvasHeight)),
-            Math.round(kgPlateWidths[plateIndex]),
-            Math.round(kgPlateDiameters[plateIndex])
+            Math.round(offsetY(diameters[plateWeight[plateIndex]], canvasHeight)),
+            Math.round(widths[plateWeight[plateIndex]]),
+            Math.round(diameters[plateWeight[plateIndex]])
           );
-          offset -= Math.round(dimension.plateDimensions.kg.kgPlateWidths[plateIndex]);
+          offset -= Math.round(widths[plateWeight[plateIndex]]);
           platesToDraw -= 1;
         }
       }

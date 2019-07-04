@@ -43,26 +43,68 @@ class Dimension {
     // All but 100kg paralympic plate are IPF regulation Eleiko plates
     // Weight reference (kg): [50, 25, 15, 10, 5, 2.5, 1.25, 0.5, 0.25]
     kg: {
-      kgPlateDiameters: [450, 450, 400, 400, 325, 228, 190, 160, 134, 112],
-      kgPlateWidths: [50, 26, 22, 22, 22, 21, 16, 12, 8, 7],
+      kgPlateDiameters: {
+        '50': 450,
+        '25': 450,
+        '15': 400,
+        '10': 325,
+        '5': 228,
+        '2.5': 190,
+        '1.25': 160,
+        '0.5': 134,
+        '0.25': 112,
+      },
+      kgPlateWidths: {
+        '50': 50,
+        '25': 27,
+        '15': 22.5,
+        '10': 21,
+        '5': 21.5,
+        '2.5': 16,
+        '1.25': 12,
+        '0.5': 8,
+        '0.25': 6,
+      },
     },
     // Rogue calibrated lb steel plate dimensions
     // Weight reference (lb): [55, 45, 35, 25, 10, 5, 2.5, 1, 0.5, 0.25]
     lb: {
-      lbPlateDiameters: [450, 450, 400, 325, 228, 190, 160, 134, 112, 90],
-      lbPlateWidths: [27, 22, 21, 23, 19, 14.5, 10, 7, 5.5, 4.5],
+      lbPlateDiameters: {
+        '55': 450,
+        '45': 450,
+        '35': 400,
+        '25': 325,
+        '10': 228,
+        '5': 190,
+        '2.5': 160,
+        '1': 134,
+        '0.5': 112,
+        '0.25': 90,
+      },
+      lbPlateWidths: {
+        '55': 27,
+        '45': 22,
+        '35': 21,
+        '25': 23,
+        '10': 19,
+        '5': 14.5,
+        '2.5': 10,
+        '1': 7,
+        '0.5': 5.5,
+        '0.25': 4.5,
+      },
     }
   }
 
   // Computed relative plate dimensions
   relPlateDimensions = {
     kg: {
-      relKgPlateDiameters: [],
-      relKgrelPlateWidths: [],
+      relKgPlateDiameters: {},
+      relKgPlateWidths: {},
     },
     lb: {
-      relLbPlateDiameters: [],
-      relLbrelPlateWidths: [],
+      relLbPlateDiameters: {},
+      relLbPlateWidths: {},
     }
   }
 
@@ -97,29 +139,25 @@ class Dimension {
 
     // Updates kg plate dimensions.
     const { kgPlateDiameters, kgPlateWidths } = this.plateDimensions.kg;
-    const kgPlateDiametersUpdated = [...kgPlateDiameters];
-    const kgPlateWidthsUpdated = [...kgPlateWidths];
-    for (let i = 0; i < kgPlateDiametersUpdated.length; i += 1) {
-      kgPlateDiametersUpdated[i] = rbbd.relBarDiameter * (kgPlateDiameters[i] / barDiameter);
-      kgPlateWidthsUpdated[i] = relBarDiameter * (kgPlateWidths[i] / barDiameter);
+    const kgPlateDiametersUpdated: any = { ...kgPlateDiameters };
+    const kgPlateWidthsUpdated: any = { ...kgPlateWidths };
+    for (const plate in kgPlateDiametersUpdated) {
+      kgPlateDiametersUpdated[plate] = rbbd.relBarDiameter * (kgPlateDiametersUpdated[plate] / barDiameter);
+      kgPlateWidthsUpdated[plate] = relBarDiameter * (kgPlateWidthsUpdated[plate] / barDiameter);
     }
-    this.plateDimensions.kg.kgPlateDiameters = kgPlateDiametersUpdated;
-    this.plateDimensions.kg.kgPlateWidths = kgPlateWidthsUpdated;
+    this.relPlateDimensions.kg.relKgPlateDiameters = { ...kgPlateDiametersUpdated };
+    this.relPlateDimensions.kg.relKgPlateWidths = { ...kgPlateWidthsUpdated };
 
     // Updates lb plate dimensions.
-    const lbPlateDimensions = this.plateDimensions.lb;
-    const lbPlateDiametersUpdated = [...lbPlateDimensions.lbPlateDiameters];
-    for (let i = 0; i < lbPlateDiametersUpdated.length; i += 1) {
-      lbPlateDiametersUpdated[i] = rbbd.relBarDiameter * (lbPlateDimensions.lbPlateDiameters[i] / barDiameter);
+    const { lbPlateDiameters, lbPlateWidths } = this.plateDimensions.lb;
+    const lbPlateDiametersUpdated: any = { ...lbPlateDiameters };
+    const lbPlateWidthsUpdated: any = { ...lbPlateWidths };
+    for (const plate in lbPlateDiametersUpdated) {
+      lbPlateDiametersUpdated[plate] = rbbd.relBarDiameter * (lbPlateDiametersUpdated[plate] / barDiameter);
+      lbPlateWidthsUpdated[plate] = relBarDiameter * (lbPlateWidthsUpdated[plate] / barDiameter);
     }
-    lbPlateDimensions.lbPlateDiameters = lbPlateDiametersUpdated;
-
-    const lbPlateWidthsUpdated = [...lbPlateDimensions.lbPlateWidths];
-    for (let i = 0; i < lbPlateWidthsUpdated.length; i += 1) {
-      lbPlateWidthsUpdated[i] = relBarDiameter * (lbPlateDimensions.lbPlateWidths[i] / barDiameter);
-    }
-    lbPlateDimensions.lbPlateWidths = lbPlateWidthsUpdated;
-    console.log(`updated lb plate dimensions`)
+    this.relPlateDimensions.lb.relLbPlateDiameters = { ...lbPlateDiametersUpdated };
+    this.relPlateDimensions.lb.relLbPlateWidths = { ...lbPlateWidthsUpdated };
   }
 }
 

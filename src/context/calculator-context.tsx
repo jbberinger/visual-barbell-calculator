@@ -1,5 +1,4 @@
-import React, { useState, createContext, useContext } from 'react'
-import { SettingsContext, WeightUnit } from './settings-context';
+import React, { useState, createContext} from 'react'
 
 // This context stores the calculator's total weight and plate counts
 

@@ -27,12 +27,11 @@ const initialOptionsState = {
       },
     },
     collar: {
-      use: true,
       weights: {
         kg: 5,
         lb: 11.0231,
-      }
-    }
+      },
+    },
   },
   plates: {
     kgPlates: {
@@ -54,8 +53,7 @@ const initialOptionsState = {
       '10': 20,
       '5': 20,
       '2.5': 20,
-      '1.25': 0,
-      '0.75': 0,
+      '1': 0,
       '0.5': 0,
       '0.25': 0,
     },
@@ -69,11 +67,11 @@ export const SettingsContext = createContext<initialOptionsStateType | any>(unde
 export const SettingsProvider = (props: any) => {
   const [optionsState, setOptionsState] = useState<initialOptionsStateType>(initialOptionsState);
   const [warning, setWarning] = useState<Warning>();
-  const [curentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
+  const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
 
   return (
     <SettingsContext.Provider
-      value={[optionsState, setOptionsState, warning, setWarning, curentWeightUnit, setCurrentWeightUnit]}>
+      value={[optionsState, setOptionsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit]}>
       {props.children}
     </SettingsContext.Provider>
   );
