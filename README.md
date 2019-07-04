@@ -15,9 +15,9 @@
 
 - [x] Two-way binding between total weight and plate counts
 - [x] Barbell animation reacts to all calculator inputs
-- [ ] Navigation
+- [x] Navigation
   - [x] Settings button triggers drawer animation
-  - [ ] Ability to switch between kg and lb
+  - [x] Ability to switch between kg and lb
 - [ ] Settings drawer
   - [x] Slides in from under navigation menu
   - [ ] Specify barbell and collar weights
