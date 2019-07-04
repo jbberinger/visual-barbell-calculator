@@ -32,7 +32,7 @@ h3 {
   align-items: center;
   justify-content: flex-end;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto 20em;
+  grid-template-rows: auto auto auto 10em;
   grid-template-areas:
     "settings"
     "weight"
@@ -78,7 +78,8 @@ h3 {
   display: grid;
   grid-area: weight;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1.5fr;
+  grid-auto-rows: minmax(75px, 1fr);
   align-items: center;
   justify-content: center;
   text-align: center;
