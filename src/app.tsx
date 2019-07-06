@@ -7,6 +7,7 @@ import SettingsPanel from './component/settings-panel';
 import NavPanel from './component/nav-panel';
 import { CalculatorProvider } from './context/calculator-context';
 import { SettingsProvider } from './context/settings-context';
+import { CanvasProvider } from './context/canvas-context'
 
 const App: React.FC = () => {
 
@@ -29,21 +30,23 @@ const App: React.FC = () => {
   }, [screenWidth, dimension]);
 
   return (
-    <SettingsProvider>
-      <CalculatorProvider>
-        <div className='app'>
-          <NavPanel />
-          <main className='grid'>
+    <CanvasProvider>
+      <SettingsProvider>
+        <CalculatorProvider>
+          <div className='app'>
+            <NavPanel />
             <SettingsPanel />
-            <Calculator />
-            <BarbellCanvas
-              dimension={dimension}
-              screenWidth={screenWidth}
-            />
-          </main>
-        </div>
-      </CalculatorProvider>
-    </SettingsProvider>
+            <main className='grid'>
+              <Calculator />
+              <BarbellCanvas
+                dimension={dimension}
+                screenWidth={screenWidth}
+              />
+            </main>
+          </div>
+        </CalculatorProvider>
+      </SettingsProvider>
+    </CanvasProvider>
   );
 }
 

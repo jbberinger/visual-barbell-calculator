@@ -1,6 +1,33 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans&display=swap");
 
+// variables //
+
 $background-color: #dadada;
+
+// mixins //
+
+@mixin input-styling {
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  &::placeholder {
+    opacity: 1;
+    transition: opacity 0.25s;
+  }
+  &:focus::placeholder {
+    opacity: 0;
+  }
+  &:active::placeholder {
+    opacity: 0;
+  }
+}
+
+button {
+  cursor: pointer;
+}
 
 html,
 body {
@@ -9,6 +36,7 @@ body {
   padding: 0;
   background: $background-color;
   font-size: 16px;
+  min-width: 320px;
 }
 
 h1 {
@@ -23,29 +51,26 @@ h3 {
   margin-bottom: 0;
 }
 
-.app {
-  // text-align: center;
-}
-
 .grid {
+  background: $background-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 2em;
+  z-index: 1000;
   display: grid;
   align-items: center;
   justify-content: flex-end;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto 10em;
+  grid-template-rows: auto auto 10em;
   grid-template-areas:
-    "settings"
     "weight"
     "canvas"
     "footer";
-  padding-top: 2em;
-  transform: translateY(-40vh);
-  transition: transform 0.5s ease;
+  transition: 0.5s;
 }
 
 .nav {
-  position: absolute;
-  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,25 +113,6 @@ h3 {
   justify-self: center;
 }
 
-@mixin input-styling {
-  padding: 0;
-  margin: 0;
-  outline: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  &::placeholder {
-    opacity: 1;
-    transition: opacity 0.25s;
-  }
-  &:focus::placeholder {
-    opacity: 0;
-  }
-  &:active::placeholder {
-    opacity: 0;
-  }
-}
-
 .total-input-card {
   grid-column: 1/3 span;
   display: flex;
@@ -115,7 +121,6 @@ h3 {
   text-align: right;
   padding: 10px 0;
   .total-input {
-    z-index: 0;
     @include input-styling;
     width: 100%;
     margin-left: 60px;
@@ -162,9 +167,112 @@ h3 {
 }
 
 .settings-panel {
+  position: relative;
+  width: 100%;
+  z-index: 0;
   grid-area: settings;
-  display: grid;
-  min-height: 40vh;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-height: 40vh;
   background: grey;
+  height: 0;
+  overflow-y: scroll;
+  // input {
+  //   text-align: center;
+  //   background: $background-color;
+  //   border: none;
+  //   border-radius: 0;
+  //   border-bottom: solid $background-color 0.5px;
+  // }
+}
+
+.settings-equipment {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  input {
+    width: 60px;
+    text-align: center;
+  }
+  .equipment-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    text-align: center;
+    h4 {
+      grid-column: 1/2 span;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.settings-plates {
+  input {
+    width: 40px;
+    text-align: center;
+  }
+  button {
+    border-radius: 1px;
+    height: 100%;
+    border: 0;
+    margin: 2px;
+    vertical-align: center;
+    background: lightgray;
+  }
+  // button {
+  //   border-radius: 1px;
+  //   height: 20px;
+  //   width: 40px;
+  //   background: none;
+  //   color: $background-color;
+  //   font-weight: bold;
+  //   border: solid 1px;
+  //   &:hover {
+  //     border: solid 1px;
+  //     color: white;
+  //   }
+  // }
+  .plate-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
+    grid-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    h4 {
+      grid-column: 1/3 span;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.plate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .plate-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.submit-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 10px 0;
+  width: 100%;
 }

@@ -18,23 +18,19 @@ export enum Warning {
 // weightUnit: current calculator weight unit
 // equipment: barbell/collar weights and if collar is used
 // plates: number of plates available and if plate is used
-const initialOptionsState = {
+export const initialSettingsState = {
   equipment: {
     barbell: {
-      weights: {
-        kg: 20,
-        lb: 45,
-      },
+      kg: 20,
+      lb: 45,
     },
     collar: {
-      weights: {
-        kg: 5,
-        lb: 11.0231,
-      },
+      kg: 5,
+      lb: 11.0231,
     },
   },
   plates: {
-    kgPlates: {
+    kg: {
       '50': 0,
       '25': 20,
       '15': 20,
@@ -45,7 +41,7 @@ const initialOptionsState = {
       '0.5': 0,
       '0.25': 0,
     },
-    lbPlates: {
+    lb: {
       '55': 0,
       '45': 20,
       '35': 20,
@@ -60,18 +56,17 @@ const initialOptionsState = {
   }
 }
 
-type initialOptionsStateType = typeof initialOptionsState;
+type settingsStateType = typeof initialSettingsState;
 
-export const SettingsContext = createContext<initialOptionsStateType | any>(undefined);
+export const SettingsContext = createContext<settingsStateType | any>(undefined);
 
 export const SettingsProvider = (props: any) => {
-  const [optionsState, setOptionsState] = useState<initialOptionsStateType>(initialOptionsState);
+  const [settingsState, setSettingsState] = useState<settingsStateType>(initialSettingsState);
   const [warning, setWarning] = useState<Warning>();
   const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
-
   return (
     <SettingsContext.Provider
-      value={[optionsState, setOptionsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit]}>
+      value={[settingsState, setSettingsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit]}>
       {props.children}
     </SettingsContext.Provider>
   );

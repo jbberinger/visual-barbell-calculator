@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import Dimension from '../util/dimension';
 import color from '../util/color';
-import { CalculatorContext, plateCountType } from '../context/calculator-context';
+import { CalculatorContext } from '../context/calculator-context';
 import { SettingsContext, Warning, WeightUnit } from '../context/settings-context';
+import { CanvasContext } from '../context/canvas-context';
 
 type BBCanvasType = {
   dimension: Dimension,
@@ -13,9 +14,10 @@ type BBCanvasType = {
 const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);
-  const [optionsState, setOptionsState, warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
+  const [, , warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
+  const [shouldRedraw, setShouldRedraw] = useContext(CanvasContext);
 
-  useEffect(() => {
+  const redraw = () => {
     const {
       relBarDiameter, relSleeveDiameter, relSleeveLength,
       relFlangeDiameter, relFlangeWidth, relSleevePlusFlange,
@@ -168,7 +170,18 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         draw(canvas, ctx);
       }
     }
-  }, [dimension, calculatorState, setWarning]);
+  }
+
+  useEffect(() => {
+    redraw();
+  }, [dimension])
+
+  useEffect(() => {
+    if (shouldRedraw) {
+      redraw();
+      setShouldRedraw(false);
+    }
+  }, [shouldRedraw]);
 
   return (
     <div className='barbell-canvas-container'>
