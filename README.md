@@ -20,10 +20,13 @@
   - [x] Ability to switch between kg and lb
 - [ ] Settings drawer
   - [x] Slides in from under navigation menu
-  - [ ] Specify barbell and collar weights
-  - [ ] Specify number of plates available
-- [ ] Optimize UI for desktop
-- [ ] Replace Canvas rect shapes with custom rounded-rect shapes
+  - [x] Specify barbell and collar weights
+  - [x] Specify number of plates available
+  - [ ] Live update inputs
+- [ ] Warnings
+- [ ] Optimized UI on desktop
+- [ ] Canvas rect shapes replaced with custom rounded-rect shapes
+- [ ] Cache settings
 
 ### Preview
 <img src="https://i.imgur.com/IyQgybQ.png" width="300">
