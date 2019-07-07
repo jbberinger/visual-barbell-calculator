@@ -20,9 +20,8 @@ const SettingsPanel: React.FC<any> = () => {
     setLocalSettings(updatedLocalSettings);
   }
 
-  const handleEquipmentInput = (event: ChangeEvent<HTMLButtonElement>) => {
+  const handleEquipmentInput = (equipment: string, unit: string, event: ChangeEvent<HTMLButtonElement>) => {
     const updatedLocalSettings = { ...localSettings };
-    const [equipment, unit] = event.target!.getAttribute('id')!.split('-');
     let value = event.target.value;
     if (value === '') {
       value = '0';
@@ -48,111 +47,119 @@ const SettingsPanel: React.FC<any> = () => {
               unit='kg'
               equipment='barbell'
               currentValue={localSettings}
-              handleEquipmentInput={handleEquipmentInput}
+              handleEquipmentInput={
+                (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell','kg', event)
+              }
             />
             <EquipmentSettingCard
-              unit='lb'
-              equipment='barbell'
-              currentValue={localSettings}
-              handleEquipmentInput={handleEquipmentInput}
-            />
+                unit='lb'
+                equipment='barbell'
+                currentValue={localSettings}
+                handleEquipmentInput={
+                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell','lb', event)
+                }
+              />
           </div>
-          <div className='equipment-group'>
-            <h4>Collar Weight</h4>
-            <EquipmentSettingCard
-              unit='kg'
-              equipment='collar'
-              currentValue={localSettings}
-              handleEquipmentInput={handleEquipmentInput}
-            />
-            <EquipmentSettingCard
-              unit='lb'
-              equipment='collar'
-              currentValue={localSettings}
-              handleEquipmentInput={handleEquipmentInput}
-            />
+            <div className='equipment-group'>
+              <h4>Collar Weight</h4>
+              <EquipmentSettingCard
+                unit='kg'
+                equipment='collar'
+                currentValue={localSettings}
+                handleEquipmentInput={
+                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar','kg', event)
+                }
+              />
+              <EquipmentSettingCard
+                unit='lb'
+                equipment='collar'
+                currentValue={localSettings}
+                handleEquipmentInput={
+                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar','lb', event)
+                }
+              />
+            </div>
           </div>
-        </div>
 
-        <div className='settings-plates'>
-          <div className='plate-group'>
-            <h4>KG Plates</h4>
-            {
-              kgPlateList.map(plate => (
-                <PlateSettingCard
-                  handlePlateSelect={handlePlateSelect}
-                  plateWeight={plate}
-                  unit='kg'
-                  currentValue={plates.kg[plate]}
-                  key={`plateCard${plate}kg`}
-                />
-              ))
-            }
+          <div className='settings-plates'>
+            <div className='plate-group'>
+              <h4>KG Plates</h4>
+              {
+                kgPlateList.map(plate => (
+                  <PlateSettingCard
+                    handlePlateSelect={handlePlateSelect}
+                    plateWeight={plate}
+                    unit='kg'
+                    currentValue={plates.kg[plate]}
+                    key={`plateCard${plate}kg`}
+                  />
+                ))
+              }
+            </div>
+            <div className='plate-group'>
+              <h4>LB Plates</h4>
+              {
+                lbPlateList.map(plate => (
+                  <PlateSettingCard
+                    handlePlateSelect={handlePlateSelect}
+                    plateWeight={plate}
+                    unit='lb'
+                    currentValue={plates.lb[plate]}
+                    key={`plateCard${plate}lb`}
+                  />
+                ))
+              }
+            </div>
           </div>
-          <div className='plate-group'>
-            <h4>LB Plates</h4>
-            {
-              lbPlateList.map(plate => (
-                <PlateSettingCard
-                  handlePlateSelect={handlePlateSelect}
-                  plateWeight={plate}
-                  unit='lb'
-                  currentValue={plates.lb[plate]}
-                  key={`plateCard${plate}lb`}
-                />
-              ))
-            }
-          </div>
-        </div>
       </form >
-      <div className='submit-group'>
-        <button onClick={() => setLocalSettings(initialSettingsState)}>default</button>
-        <button onClick={handleSave}>save</button>
-      </div>
+        <div className='submit-group'>
+          <button onClick={() => setLocalSettings(initialSettingsState)}>default</button>
+          <button onClick={handleSave}>save</button>
+        </div>
     </div>
 
-  );
-}
-
-// Input for equipment weights
-const EquipmentSettingCard: React.FC<any> = ({ unit, equipment, currentValue, handleEquipmentInput }) => {
+      );
+    }
+    
+    // Input for equipment weights
+const EquipmentSettingCard: React.FC<any> = ({unit, equipment, currentValue, handleEquipmentInput }) => {
   return (
     <div className='equipment-card'>
-      <div className='setting-input-container'>
-        <input
-          type='tel'
-          value={currentValue.equipment[equipment][unit]}
-          id={`${equipment}-${unit}`}
-          onChange={handleEquipmentInput}
-        />
-      </div>
-      {unit}
-    </div>
-  )
-}
-
-// Input with increment/decrement buttons for plates available
-const PlateSettingCard: React.FC<any> = ({ handlePlateSelect, plateWeight, unit, currentValue }) => {
-  const options = ['0', '2', '4', '6', '8', '10', '12', '14', '16', '18', '20', '∞'];
-  const values = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, Infinity];
-  return (
+          <div className='setting-input-container'>
+            <input
+              type='tel'
+              value={currentValue.equipment[equipment][unit]}
+              id={`${equipment}-${unit}`}
+              onChange={handleEquipmentInput}
+            />
+          </div>
+          {unit}
+        </div>
+        )
+      }
+      
+      // Input with increment/decrement buttons for plates available
+const PlateSettingCard: React.FC<any> = ({handlePlateSelect, plateWeight, unit, currentValue }) => {
+  const options = ['0', '2', '4', '6', '8', '10', '12', '∞'];
+          const values = [0, 2, 4, 6, 8, 10, 12, Infinity];
+          return (
     <div className='plate-card'>
-      <select onChange={handlePlateSelect} value={currentValue} id={`select-${plateWeight}-${unit}`}>
-        {
-          options.map((option, index) => (
-            <option
-              value={values[index]}
-              key={Math.random()}
-              onChange={handlePlateSelect}
-            >
-              {option}
-            </option>
-          ))
+            <select onChange={handlePlateSelect} value={currentValue} id={`select-${plateWeight}-${unit}`}>
+              {
+                options.map((option, index) => (
+                  <option
+                    value={values[index]}
+                    key={Math.random()}
+                    onChange={handlePlateSelect}
+                  >
+                    {option}
+                  </option>
+                ))
+              }
+            </select>
+            {plateWeight}
+          </div>
+          )
         }
-      </select>
-      {plateWeight}
-    </div>
-  )
-}
-
+        
 export default SettingsPanel;

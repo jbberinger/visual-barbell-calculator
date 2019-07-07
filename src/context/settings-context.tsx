@@ -17,7 +17,7 @@ export enum Warning {
 //
 // weightUnit: current calculator weight unit
 // equipment: barbell/collar weights and if collar is used
-// plates: number of plates available and if plate is used
+// plates: plate pairs available
 export const initialSettingsState = {
   equipment: {
     barbell: {

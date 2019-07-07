@@ -147,8 +147,8 @@ h3 {
     width: 2em;
     text-align: center;
     font-size: 2em;
-    // border-bottom: 0.5px solid #777;
-    // margin-bottom: 5px;
+    border-radius: 2px;
+    transition: background 0.5s ease-in-out 0.1s;
   }
   .input-unit {
     font-size: 0.9em;

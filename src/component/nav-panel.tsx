@@ -8,6 +8,7 @@ const NavPanel: React.FC = () => {
   const [, , , , , setCurrentWeightUnit] = useContext(SettingsContext);
   const [calculatorState, setCalculatorState] = useContext(CalculatorContext);
 
+  // Triggers settings drawer animation
   const handleSettingsButton = () => {
     setSettingsVisible(!settingsVisible);
     const settingsPanel: HTMLElement = document.querySelector('.settings-panel') as HTMLElement;
@@ -22,7 +23,7 @@ const NavPanel: React.FC = () => {
     }
   }
 
-  // changes weight unit and converts total
+  // Changes weight unit and converts total
   const handleWeightUnit = (event: ChangeEvent<HTMLInputElement>) => {
     const kgToLbFactor = 2.20462262;
     const weightUnit: WeightUnit = parseInt(event.target.value);

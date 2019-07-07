@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useState, useEffect, useRef } from 'react';
 import color from '../util/color'
 import { CalculatorContext, plateCountType } from '../context/calculator-context';
-import { SettingsContext, WeightUnit } from '../context/settings-context';
+import { SettingsContext, WeightUnit, Warning } from '../context/settings-context';
 import { CanvasContext } from '../context/canvas-context';
 
 const Calculator: React.FC = () => {
@@ -14,8 +14,8 @@ const Calculator: React.FC = () => {
   // Calculates total equipment weight from collar and barbell
   const calculateTotalEquipmentWeight = (): number => {
     const { barbell, collar } = settingsState.equipment;
-    let barbellWeight:number = 0;
-    let collarWeight:number = 0;
+    let barbellWeight: number = 0;
+    let collarWeight: number = 0;
     if (currentWeightUnit === WeightUnit.KG) {
       barbellWeight = barbell.kg;
       collarWeight = collar.kg;
@@ -26,29 +26,26 @@ const Calculator: React.FC = () => {
     return barbellWeight + collarWeight;
   }
 
-  // Calculates plates with a greedy algorithm restricted to even multiples
+  // Greedy algorithm for calculating plate pair counts from heaviest to lightest
   const countPlatesFromTotal = (plateWeights: string[], total: number): plateCountType => {
     console.log(`recalculated plates with total: ${total} and equipmentWeight: ${calculateTotalEquipmentWeight()}`);
     let plateCounts: plateCountType = {};
-    const unit = currentWeightUnit == WeightUnit.KG ? 'kg' : 'lb';
+    const unit = currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb';
     let remainingWeight = total - calculateTotalEquipmentWeight();
     // Makes sure weight is never negative
     remainingWeight = remainingWeight >= 0 ? remainingWeight : 0;
     const plates = plateWeights.sort((a, b) => parseFloat(b) - parseFloat(a));
-    // Iterates through plates and determines plate counts
+    // Iterates through plates and determines plate pair counts
     for (let plateIndex = 0; plateIndex < plates.length; plateIndex += 1) {
-      const currentPlate = parseFloat(plates[plateIndex]);
-      let currentPlateCount = Math.floor(remainingWeight / currentPlate);
+      const currentPlateWeight = parseFloat(plates[plateIndex]);
+      let currentPlatePairCount = Math.floor(remainingWeight / (currentPlateWeight * 2));
       // Barbell can only be loaded with even numbers of plates and 
       // plates can not exceed total plates available
-      if (currentPlateCount > settingsState.plates[unit][currentPlate]) {
-        currentPlateCount = settingsState.plates[unit][currentPlate];
+      if (currentPlatePairCount > settingsState.plates[unit][currentPlateWeight]) {
+        currentPlatePairCount = settingsState.plates[unit][currentPlateWeight];
       }
-      if (!isEven(currentPlateCount)) {
-        currentPlateCount -= 1;
-      }
-      remainingWeight -= currentPlateCount * currentPlate;
-      plateCounts[currentPlate] = currentPlateCount.toString();
+      remainingWeight -= currentPlatePairCount * currentPlateWeight * 2;
+      plateCounts[currentPlateWeight] = currentPlatePairCount.toString();
     }
     return plateCounts;
   }
@@ -109,39 +106,46 @@ const Calculator: React.FC = () => {
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
     console.log('handle plate input');
     const name: string | null = event.target.getAttribute('name');
+
     // ensures name attribute exists
     if (name) {
-      let count: number;
+      let platePairs: number;
       const weight: number = parseFloat(name);
       // properly clears plate count
       if (event.target.value === '') {
-        count = 0;
+        platePairs = 0;
         // else sanitizes input
       } else {
-        count = parseInt(event.target.value.replace(/[^\d]/g, ''));
-        if (!count) {
-          count = 0;
+        platePairs = parseInt(event.target.value.replace(/[^\d]/g, ''));
+        if (!platePairs) {
+          platePairs = 0;
         }
       }
 
-      // creates a new copy of displayed plates and updates given count
+      // If plate pairs available are exceeded, user is warned.
+      const unit = currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb';
+      if (platePairs > settingsState.plates[unit][weight]) {
+        setWarning(Warning.NOT_ENOUGH_PLATES);
+        event.target.style.background = 'rgba(255,0,0,0.1)';
+      } else {
+        event.target.style.background = 'none';
+      }
+
+      // Creates a new copy of displayed plates and updates given count
       const updatedPlateCounts: plateCountType = { ...plateDisplay };
-      updatedPlateCounts[weight] = count.toString();
+      updatedPlateCounts[weight] = platePairs.toString();
 
-      // calculates new displayed total based on updated plate counts and sets disply state
+      // Calculates new displayed total based on updated plate pair counts and sets disply state
       const currentTotalDisplay: number = totalDisplay ? parseFloat(totalDisplay) : 0;
-      const currentPlateCount: number = plateDisplay[weight] ? parseInt(plateDisplay[weight]) : 0;
-      const newTotal: number = currentTotalDisplay + (count - currentPlateCount) * weight;
+      const currentPlatePairs: number = plateDisplay[weight] ? parseInt(plateDisplay[weight]) : 0;
+      const newTotal: number = currentTotalDisplay + ((platePairs - currentPlatePairs) * weight * 2);
 
+      // Updates local and context states
       setPlateDisplay(updatedPlateCounts);
       setTotalDisplay(newTotal === 0 ? '' : newTotal.toString());
-
-      // if given plate count is even, sets total and plate count context states
-      if (isEven(count)) {
-        const currentPlateDisplay = { ...plateDisplay };
-        currentPlateDisplay[weight] = count.toString();
-        setCalculatorState({ total: newTotal, plateCounts: currentPlateDisplay });
-      }
+      const currentPlateDisplay = { ...plateDisplay };
+      currentPlateDisplay[weight] = platePairs.toString();
+      setCalculatorState({ total: newTotal, plateCounts: currentPlateDisplay });
     }
     setShouldRedraw(true);
   }
