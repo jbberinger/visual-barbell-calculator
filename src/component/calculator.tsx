@@ -186,16 +186,19 @@ const Calculator: React.FC = () => {
 
   return (
     <form className='weights-container' autoComplete='off'>
-      <div className='total-input-card'>
-        <input
-          className='total-input'
-          type='tel'
-          placeholder='0'
-          value={totalDisplay}
-          style={{ caretColor: 'black' }}
-          onChange={handleTotalInput}
-        />
-        <span className='total-unit'>{currentWeightUnit == WeightUnit.KG ? 'kg' : 'lb'}</span>
+      <div className='total-container'>
+        <div className='total-input-card'>
+          <input
+            className='total-input'
+            type='tel'
+            placeholder='0'
+            value={totalDisplay}
+            style={{ caretColor: 'black' }}
+            onChange={handleTotalInput}
+          />
+          <span className='total-unit'>{currentWeightUnit == WeightUnit.KG ? 'kg' : 'lb'}</span>
+        </div>
+        <span className='plate-pairs-heading'>plate pairs</span>
       </div>
       {
         Object.entries(plateDisplay).sort(([a,], [b,]) => parseFloat(b) - parseFloat(a)).map(([weight, count]) => (

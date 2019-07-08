@@ -5,7 +5,7 @@ import { SettingsContext, WeightUnit } from '../context/settings-context';
 // Navigation for switching between weight units and triggering the settings drawer animation
 const NavPanel: React.FC = () => {
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [, , , , , setCurrentWeightUnit] = useContext(SettingsContext);
+  const [, , , , currentWeightUnit, setCurrentWeightUnit] = useContext(SettingsContext);
   const [calculatorState, setCalculatorState] = useContext(CalculatorContext);
 
   // Triggers settings drawer animation
@@ -15,7 +15,7 @@ const NavPanel: React.FC = () => {
     const grid: HTMLElement = document.querySelector('.grid') as HTMLElement;
     if (!settingsVisible) {
       settingsPanel.style.height = 'initial';
-      grid.style.transform = 'translateY(40vh)';
+      grid.style.transform = `translateY(${settingsPanel.offsetHeight}px)`;
     } else {
       // hacky fix until css height transition problem resolved
       setTimeout(() => { settingsPanel.style.height = '0' }, 500);
@@ -43,7 +43,8 @@ const NavPanel: React.FC = () => {
   return (
     <nav className='nav'>
       <form>
-        <label>
+        <label style={{ color: `${currentWeightUnit === WeightUnit.KG ? 'white' : ''}` }}>
+
           <input
             type='radio'
             name='weightUnit'
@@ -53,8 +54,8 @@ const NavPanel: React.FC = () => {
             onChange={handleWeightUnit}
           />
           kg
-        </label>
-        <label>
+          </label>
+        <label style={{ color: `${currentWeightUnit === WeightUnit.LB ? 'white' : ''}` }}>
           <input
             type='radio'
             name='weightUnit'
@@ -64,7 +65,7 @@ const NavPanel: React.FC = () => {
             onChange={handleWeightUnit}
           />
           lb
-        </label>
+          </label>
       </form>
       <button className='nav-button' onClick={handleSettingsButton}>settings</button>
     </nav>

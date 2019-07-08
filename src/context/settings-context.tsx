@@ -18,7 +18,7 @@ export enum Warning {
 // weightUnit: current calculator weight unit
 // equipment: barbell/collar weights and if collar is used
 // plates: plate pairs available
-export const initialSettingsState = {
+export const defaultSettingsState = {
   equipment: {
     barbell: {
       kg: 20,
@@ -26,7 +26,45 @@ export const initialSettingsState = {
     },
     collar: {
       kg: 5,
-      lb: 11.0231,
+      lb: 11.02,
+    },
+  },
+  plates: {
+    kg: {
+      '50': 0,
+      '25': 10,
+      '15': 10,
+      '10': 10,
+      '5': 10,
+      '2.5': 10,
+      '1.25': 10,
+      '0.5': 0,
+      '0.25': 0,
+    },
+    lb: {
+      '55': 0,
+      '45': 10,
+      '35': 10,
+      '25': 10,
+      '10': 10,
+      '5': 10,
+      '2.5': 10,
+      '1': 0,
+      '0.5': 0,
+      '0.25': 0,
+    },
+  }
+}
+
+const initialSettingsState = {
+  equipment: {
+    barbell: {
+      kg: 20,
+      lb: 45,
+    },
+    collar: {
+      kg: 5,
+      lb: 11.02,
     },
   },
   plates: {

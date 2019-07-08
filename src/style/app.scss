@@ -1,8 +1,9 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Oxygen+Mono&display=swap");
 
 // variables //
 
 $background-color: #dadada;
+$nav-color: #424242;
 
 // mixins //
 
@@ -56,13 +57,14 @@ h3 {
   position: absolute;
   top: 0;
   left: 0;
-  margin-top: 2em;
+  width: 100%;
+  margin-top: 2.75em;
   z-index: 1000;
   display: grid;
   align-items: center;
   justify-content: flex-end;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 10em;
+  grid-template-rows: auto auto auto;
   grid-template-areas:
     "weight"
     "canvas"
@@ -74,8 +76,8 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #424242;
-  height: 2em;
+  background: $nav-color;
+  height: 2.75em;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -84,18 +86,38 @@ h3 {
   label,
   button {
     cursor: pointer;
+    font-size: 1.25em;
+    border: none;
+    outline: none;
+    transition: 0.5s ease-out;
+    &:hover {
+      transition: 0.1s ease-in;
+      color: white;
+    }
   }
   button {
+    padding: 0 10px;
     background: none;
     border: none;
     color: $background-color;
-    font-size: 1em;
+  }
+  label {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    color: darkgrey;
+    &:hover {
+      transition: 0.1s ease-in;
+      color: white;
+    }
   }
   .nav-unit-radio {
     display: none;
   }
-  label {
-    padding: 0 10px;
+  :focus {
+    transition: none;
+    color: white;
   }
 }
 
@@ -108,33 +130,46 @@ h3 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 700px;
+  max-width: 500px;
   min-width: 0;
   justify-self: center;
 }
 
-.total-input-card {
+.total-container {
   grid-column: 1/3 span;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: right;
-  padding: 10px 0;
-  .total-input {
-    @include input-styling;
-    width: 100%;
-    margin-left: 60px;
-    font-size: 3em;
-    text-align: center;
-    border-bottom: 0.5px solid #777;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  color: $nav-color;
+  letter-spacing: 0.1em;
+  .total-input-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    .total-input {
+      @include input-styling;
+      width: 100%;
+      margin-left: 60px;
+      font-size: 3em;
+      text-align: center;
+      border-bottom: 0.5px solid #777;
+    }
+    .total-unit {
+      position: relative;
+      right: 0;
+      font-size: 2em;
+      min-width: 60px;
+      text-align: left;
+    }
   }
-  .total-unit {
-    position: relative;
-    right: 0;
-    font-size: 2em;
-    min-width: 60px;
-    text-align: left;
-  }
+}
+
+.plate-pairs-heading {
+  padding-bottom: 6px;
 }
 
 .input-card {
@@ -167,25 +202,36 @@ h3 {
 }
 
 .settings-panel {
-  position: relative;
-  width: 100%;
-  z-index: 0;
   grid-area: settings;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  max-height: 40vh;
-  background: grey;
+  position: relative;
+  width: 100%;
   height: 0;
+  padding: 10px 0px;
+  z-index: 0;
+  max-height: 45vh;
+  background: grey;
+  color: #111111;
   overflow-y: scroll;
-  // input {
-  //   text-align: center;
-  //   background: $background-color;
-  //   border: none;
-  //   border-radius: 0;
-  //   border-bottom: solid $background-color 0.5px;
-  // }
+  input {
+    font-size: 1.1em;
+  }
+  h4 {
+    font-size: 15px;
+    padding: 0;
+    font-size: 1.1em;
+    font-weight: normal;
+    border-bottom: 1px solid $nav-color;
+  }
+  :focus {
+    outline-color: black;
+  }
+  :target {
+    outline-color: black;
+  }
 }
 
 .settings-equipment {
@@ -193,65 +239,87 @@ h3 {
   justify-content: space-evenly;
   width: 100%;
   input {
-    width: 60px;
     text-align: center;
+    background: $background-color;
+    border: none;
+    border-radius: 1px;
+    &::placeholder {
+      color: black;
+      opacity: 1;
+      transition: opacity 0.25s;
+    }
+    &:focus::placeholder {
+      opacity: 0;
+    }
+    &:active::placeholder {
+      opacity: 0;
+    }
   }
   .equipment-group {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: auto;
+    grid-template-rows: min-content;
+    align-items: center;
+    justify-content: flex-start;
     grid-gap: 5px;
     align-items: center;
     justify-content: center;
     max-width: 100%;
-    text-align: center;
+    max-height: min-content;
+    padding: 0 5px;
     h4 {
-      grid-column: 1/2 span;
       text-align: center;
       margin: 0;
-      padding: 0;
+      margin-bottom: 3px;
+    }
+    .equipment-weight-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .equipment-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2px;
+      input {
+        width: 50px;
+      }
+    }
+    .equipment-unit {
+      padding-left: 3px;
     }
   }
 }
 
 .settings-plates {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-evenly;
   input {
     width: 40px;
     text-align: center;
   }
-  button {
-    border-radius: 1px;
-    height: 100%;
-    border: 0;
-    margin: 2px;
-    vertical-align: center;
-    background: lightgray;
+  select {
+    background: $background-color;
+    font-size: 1.1em;
+    cursor: pointer;
   }
-  // button {
-  //   border-radius: 1px;
-  //   height: 20px;
-  //   width: 40px;
-  //   background: none;
-  //   color: $background-color;
-  //   font-weight: bold;
-  //   border: solid 1px;
-  //   &:hover {
-  //     border: solid 1px;
-  //     color: white;
-  //   }
-  // }
   .plate-group {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-auto-rows: 1fr;
+    grid-auto-rows: auto;
     grid-gap: 5px;
     align-items: center;
     justify-content: center;
+    width: auto;
     h4 {
       grid-column: 1/3 span;
       text-align: center;
       margin: 0;
-      padding: 0;
+      margin-top: 10px;
+      margin-bottom: 5px;
     }
   }
 }
@@ -275,4 +343,114 @@ h3 {
   justify-content: space-evenly;
   padding: 10px 0;
   width: 100%;
+  button {
+    font-size: 0.9em;
+    border: solid $background-color 2px;
+    border-radius: 1px;
+    transition: 0.5s ease-in-out;
+    background: $background-color;
+    &:hover {
+      transition: none;
+      background: white;
+      border-color: white;
+    }
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .grid {
+    background: $background-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 2.75em;
+    z-index: 1000;
+    display: grid;
+    align-items: flex-start;
+    justify-content: flex-end;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 10em;
+    grid-template-areas:
+      "calculator canvas"
+      "footer footer";
+    transition: 0.5s;
+  }
+  .weights-container {
+    grid-area: calculator;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1.5fr;
+    grid-auto-rows: minmax(125px, 1fr);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 700px;
+    min-width: 0;
+    font-size: 1.5em;
+  }
+  .plate-pairs-heading {
+    padding-bottom: 0;
+  }
+  .barbell-canvas-container {
+    grid-area: canvas;
+    text-align: right;
+    .barbell-canvas {
+      padding: 0;
+      margin: 0;
+      grid-column: 1/2;
+      grid-row: 2;
+    }
+  }
+  .settings-panel {
+    grid-area: settings;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding: 10px 0px;
+    z-index: 0;
+    max-height: 45vh;
+    background: grey;
+    color: #111111;
+    overflow-y: scroll;
+    form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 60%;
+    }
+    input {
+      font-size: 1.1em;
+    }
+    h4 {
+      font-size: 15px;
+      padding: 0;
+      font-size: 1.1em;
+      font-weight: normal;
+      border-bottom: 1px solid $nav-color;
+    }
+  }
+
+  .settings-equipment {
+    height: min-content;
+    .equipment-group {
+      grid-template-rows: auto;
+      padding-bottom: 10px;
+    }
+  }
+  .plate-group h4 {
+    margin-top: 0;
+  }
+  .settings-plates {
+    width: 100%;
+    .plate-group {
+      h4 {
+        margin-top: 0;
+      }
+    }
+  }
 }
