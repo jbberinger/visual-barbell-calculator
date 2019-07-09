@@ -34,7 +34,7 @@ const color = {
   // Based on plate color, but optimized for visibility.
   inputText: {
     kg: {
-      '50': 'hsl(0, 0%, 17%',
+      '50': 'hsl(0, 0%, 17%)',
       '25': 'hsl(8, 51.8%, 50.4%)',
       '20': 'hsl(219, 46.8%, 39.8%)',
       '15': 'hsl(53, 100%, 39.7%)',

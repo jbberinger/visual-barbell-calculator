@@ -1,5 +1,4 @@
-import React, { useState, createContext} from 'react'
-
+import React, { useState, createContext } from 'react'
 // This context stores the calculator's total weight and plate counts
 
 export const kgPlateWeights: string[] = ['50', '25', '20', '15', '10', '5', '2.5', '1.25', '0.5', '0.25'];
@@ -23,10 +22,11 @@ export const CalculatorContext = createContext<initialCalculatorStateType | any>
 
 export const CalculatorProvider = (props: any) => {
   const [calculatorState, setCalculatorState] = useState<initialCalculatorStateType>(initialCalculatorState);
+  const [convertedTotal, setConvertedTotal] = useState(0);
 
   return (
     <CalculatorContext.Provider
-      value={[calculatorState, setCalculatorState]}>
+      value={[calculatorState, setCalculatorState, convertedTotal, setConvertedTotal]}>
       {props.children}
     </CalculatorContext.Provider>
   );

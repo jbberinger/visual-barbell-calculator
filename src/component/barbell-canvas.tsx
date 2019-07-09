@@ -3,7 +3,6 @@ import Dimension from '../util/dimension';
 import color from '../util/color';
 import { CalculatorContext } from '../context/calculator-context';
 import { SettingsContext, Warning, WeightUnit } from '../context/settings-context';
-import { CanvasContext } from '../context/canvas-context';
 
 type BBCanvasType = {
   dimension: Dimension,
@@ -15,11 +14,8 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);
   const [, , warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
-  const [shouldRedraw, setShouldRedraw] = useContext(CanvasContext);
 
   const redraw = () => {
-    console.log(JSON.stringify(calculatorState));
-
     const {
       relBarDiameter, relSleeveDiameter, relSleeveLength,
       relFlangeDiameter, relFlangeWidth, relSleevePlusFlange,
@@ -64,19 +60,19 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
     }
 
     // Draws rectangle and strokes a dark outline to distinguish shapes
-    const strokeAndFillRect = (
-      ctx: CanvasRenderingContext2D,
-      c: string,
-      x: number,
-      y: number,
-      w: number,
-      h: number) => {
-      ctx.fillStyle = c;
-      ctx.fillRect(x, y, w, h);
-      ctx.strokeStyle = color.adjustLuminosity(c, -10);
-      ctx.lineWidth = 1;
-      ctx.strokeRect(x, y, w, h);
-    };
+    // const strokeAndFillRect = (
+    //   ctx: CanvasRenderingContext2D,
+    //   c: string,
+    //   x: number,
+    //   y: number,
+    //   w: number,
+    //   h: number) => {
+    //   ctx.fillStyle = c;
+    //   ctx.fillRect(x, y, w, h);
+    //   ctx.strokeStyle = color.adjustLuminosity(c, -10);
+    //   ctx.lineWidth = 1;
+    //   ctx.strokeRect(x, y, w, h);
+    // };
 
     const offsetX = (width: number, canvasWidth: number): number => canvasWidth - width;
     const offsetY = (height: number, canvasHeight: number): number => canvasHeight / 2 - height / 2;
@@ -225,16 +221,9 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   }
 
   useEffect(() => {
+    console.log('use canvas effect')
     redraw();
-  })
-  // }, [dimension])
-
-  // useEffect(() => {
-  //   if (shouldRedraw) {
-  //     redraw();
-  //     setShouldRedraw(false);
-  //   }
-  // }, [shouldRedraw]);
+  }, [dimension, calculatorState]);
 
   return (
     <div className='barbell-canvas-container'>

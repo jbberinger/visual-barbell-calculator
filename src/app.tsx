@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './style/app.scss';
 import Dimension from './util/dimension';
 import BarbellCanvas from './component/barbell-canvas';
@@ -7,7 +7,6 @@ import SettingsPanel from './component/settings-panel';
 import NavPanel from './component/nav-panel';
 import { CalculatorProvider } from './context/calculator-context';
 import { SettingsProvider } from './context/settings-context';
-import { CanvasProvider } from './context/canvas-context'
 
 const App: React.FC = () => {
   const [screenWidth, setScreenWidth] = useState(
@@ -28,7 +27,7 @@ const App: React.FC = () => {
         (window.innerWidth > 800 && window.innerHeight < 1080)
           ? window.innerWidth / 2
           : window.innerWidth
-          );
+      );
       dimension.update(barWidthFromScreenWidth(screenWidth));
     }
     window.addEventListener('resize', handleResize);
@@ -38,23 +37,21 @@ const App: React.FC = () => {
   }, [screenWidth, dimension]);
 
   return (
-    <CanvasProvider>
-      <SettingsProvider>
-        <CalculatorProvider>
-          <div className='app'>
-            <NavPanel />
-            <SettingsPanel />
-            <main className='grid'>
-              <Calculator />
-              <BarbellCanvas
-                dimension={dimension}
-                screenWidth={screenWidth}
-              />
-            </main>
-          </div>
-        </CalculatorProvider>
-      </SettingsProvider>
-    </CanvasProvider>
+    <SettingsProvider>
+      <CalculatorProvider>
+        <div className='app'>
+          <NavPanel />
+          <SettingsPanel />
+          <main className='grid'>
+            <Calculator />
+            <BarbellCanvas
+              dimension={dimension}
+              screenWidth={screenWidth}
+            />
+          </main>
+        </div>
+      </CalculatorProvider>
+    </SettingsProvider>
   );
 }
 

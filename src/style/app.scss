@@ -38,6 +38,7 @@ body {
   background: $background-color;
   font-size: 16px;
   min-width: 320px;
+  letter-spacing: 0.1em;
 }
 
 h1 {
@@ -157,6 +158,9 @@ h3 {
       font-size: 3em;
       text-align: center;
       border-bottom: 0.5px solid #777;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      transition: background 0.5s ease-in-out 0.1s;
     }
     .total-unit {
       position: relative;
@@ -169,7 +173,7 @@ h3 {
 }
 
 .plate-pairs-heading {
-  padding-bottom: 6px;
+  padding-bottom: 8px;
 }
 
 .input-card {
@@ -216,6 +220,7 @@ h3 {
   background: grey;
   color: #111111;
   overflow-y: scroll;
+  font-size: 0.7em;
   input {
     font-size: 1.1em;
   }

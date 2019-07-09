@@ -1,15 +1,15 @@
-import React, { ChangeEvent, useContext, useState, useEffect, useRef } from 'react';
+import React, { ChangeEvent, useContext, useState, useEffect } from 'react';
 import color from '../util/color'
 import { CalculatorContext, plateCountType } from '../context/calculator-context';
 import { SettingsContext, WeightUnit, Warning } from '../context/settings-context';
-import { CanvasContext } from '../context/canvas-context';
 
 const Calculator: React.FC = () => {
   const kgInputColors: any = color.inputText.kg;
   const lbInputColors: any = color.inputText.lb;
-  const [calculatorState, setCalculatorState] = useContext(CalculatorContext);
-  const [settingsState, setSettingsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit] = useContext(SettingsContext);
-  const [shouldRedraw, setShouldRedraw] = useContext(CanvasContext);
+  const [calculatorState, setCalculatorState, convertedTotal] = useContext(CalculatorContext);
+  const [settingsState, , warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
+  let plateInputRefs: any[] = [];
+  let totalRef: any;
 
   // Calculates total equipment weight from collar and barbell
   const calculateTotalEquipmentWeight = (): number => {
@@ -50,18 +50,20 @@ const Calculator: React.FC = () => {
     return plateCounts;
   }
 
-  // Returns true if value is even
-  const isEven = (value: number): boolean => value % 2 === 0;
-
   // Ensures string is a valid decimal
-  const sanitizeDecimal = (input: string): string => `${parseFloat(input.replace(/[^0-9.]/g, ''))}`;
+  const sanitizeDecimal = (input: string): string => input.replace(/[^0-9.]/g, '');
+
+  // Checks if value is positive and numeric with no spaces
+  const isPositiveNumeric = (value: any): boolean => {
+    return !isNaN(value - parseFloat(value)) && parseFloat(value) > 0 && value === sanitizeDecimal(value)
+  };
 
   // Initializes plates based on current weight unit and total.
   const initPlates = () => {
     console.log('init plates');
     const { lb, kg } = settingsState.plates;
     let plates: string[];
-    if (currentWeightUnit == WeightUnit.KG) {
+    if (currentWeightUnit === WeightUnit.KG) {
       plates = Object.keys(kg).filter(plate => kg[plate] > 0);
     } else {
       plates = Object.keys(lb).filter(plate => lb[plate] > 0);
@@ -81,7 +83,7 @@ const Calculator: React.FC = () => {
 
   // Triggered when settings change
   useEffect(() => {
-    console.log('use effect triggered')
+    console.log('settingsState effect triggered')
     let updatedPlateCount: plateCountType;
     const total = calculatorState.total;
     // Converts total and plate counts to appropriate unit.
@@ -99,14 +101,61 @@ const Calculator: React.FC = () => {
     setTotalDisplay(total === 0 ? '' : total.toString());
     setPlateDisplay(updatedPlateCount);
     setCalculatorState({ total: total, plateCounts: updatedPlateCount });
-    setShouldRedraw(true);
-  }, [settingsState, currentWeightUnit]);
+  }, [settingsState]);
+
+  // Triggered when convertedTotal changes
+  useEffect(() => {
+    console.log('convertedTotal effect triggered');
+    let updatedPlateCount: plateCountType;
+    // Converts total and plate counts to appropriate unit.
+    if (currentWeightUnit == WeightUnit.KG) {
+      const kg = settingsState.plates.kg;
+      const plates = Object.keys(kg).filter(plate => kg[plate] > 0);
+      updatedPlateCount = countPlatesFromTotal(plates, convertedTotal);
+      setCurrentInputColors(kgInputColors);
+    } else {
+      const lb = settingsState.plates.lb;
+      const plates = Object.keys(lb).filter(plate => lb[plate] > 0);
+      updatedPlateCount = countPlatesFromTotal(plates, convertedTotal);
+      setCurrentInputColors(lbInputColors);
+    }
+    setTotalDisplay(convertedTotal === 0 ? '' : convertedTotal.toString());
+    setPlateDisplay(updatedPlateCount);
+    setCalculatorState({ total: convertedTotal, plateCounts: updatedPlateCount });
+  }, [convertedTotal])
+
+  // Sets warnings
+  useEffect(() => {
+    const unit = currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb';
+    // Sets background to red for plate inputs exceeding available plates
+    for (let plate in plateInputRefs) {
+      let availablePlates = settingsState.plates[unit][plate];
+      let plateCount = plateDisplay[plate];
+      let input = plateInputRefs[plate] as HTMLElement;
+      if (plateCount > availablePlates) {
+        input.style.background = 'rgba(255,0,0,0.1)';
+      } else {
+        input.style.background = 'none';
+      }
+    }
+    // Sets total input background to red for totals exceeding max weight
+    // determined by current settings
+    let maxTotal: number = calculateTotalEquipmentWeight();
+    for (let plate in plateDisplay) {
+      console.log(plate);
+      maxTotal += parseFloat(plate) * settingsState.plates[unit][plate] * 2;
+    }
+    if (parseFloat(totalDisplay) > maxTotal) {
+      (totalRef as HTMLElement).style.background = 'rgba(255,0,0,0.1)';
+    } else {
+      (totalRef as HTMLElement).style.background = 'none';
+    }
+  }, [plateDisplay, settingsState.plates, currentWeightUnit]);
 
   // handles plate count inputs
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
     console.log('handle plate input');
     const name: string | null = event.target.getAttribute('name');
-
     // ensures name attribute exists
     if (name) {
       let platePairs: number;
@@ -122,23 +171,19 @@ const Calculator: React.FC = () => {
         }
       }
 
-      // If plate pairs available are exceeded, user is warned.
-      const unit = currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb';
-      if (platePairs > settingsState.plates[unit][weight]) {
-        setWarning(Warning.NOT_ENOUGH_PLATES);
-        event.target.style.background = 'rgba(255,0,0,0.1)';
-      } else {
-        event.target.style.background = 'none';
-      }
-
       // Creates a new copy of displayed plates and updates given count
       const updatedPlateCounts: plateCountType = { ...plateDisplay };
       updatedPlateCounts[weight] = platePairs.toString();
 
-      // Calculates new displayed total based on updated plate pair counts and sets disply state
-      const currentTotalDisplay: number = totalDisplay ? parseFloat(totalDisplay) : 0;
-      const currentPlatePairs: number = plateDisplay[weight] ? parseInt(plateDisplay[weight]) : 0;
-      const newTotal: number = currentTotalDisplay + ((platePairs - currentPlatePairs) * weight * 2);
+      // Calculates new displayed total based on updated plate pair counts and equipment
+      let newTotal: number = 0;
+      Object.keys(updatedPlateCounts).map(weight =>
+        newTotal += parseFloat(weight) * parseInt(updatedPlateCounts[weight]) * 2
+      );
+      if (newTotal !== 0) {
+        newTotal += calculateTotalEquipmentWeight();
+      }
+      newTotal = Math.round(newTotal * 100) / 100;
 
       // Updates local and context states
       setPlateDisplay(updatedPlateCounts);
@@ -147,7 +192,6 @@ const Calculator: React.FC = () => {
       currentPlateDisplay[weight] = platePairs.toString();
       setCalculatorState({ total: newTotal, plateCounts: currentPlateDisplay });
     }
-    setShouldRedraw(true);
   }
 
   // handles total weight input
@@ -155,10 +199,11 @@ const Calculator: React.FC = () => {
     console.log('handle total input');
     const plates = Object.keys(plateDisplay);
     let totalInput: string = event.target.value;
+    debugger;
     // protects against double zero total
     if (totalInput !== '00') {
       // displays 0 when cleared
-      if (totalInput === '' || totalInput === '0') {
+      if (totalInput === '') {
         setTotalDisplay('');
         const newPlateCounts: plateCountType = countPlatesFromTotal(plates, 0);
         setPlateDisplay(newPlateCounts);
@@ -168,20 +213,15 @@ const Calculator: React.FC = () => {
       else if (totalInput === '.') {
         setTotalDisplay('0.');
       }
-      // checks for trailing decimal
-      else if (/^\d+\.$/.test(totalInput)) {
+      // checks for valid decimal number input
+      else if (isPositiveNumeric(totalInput)) {
+        totalInput = event.target.value;
         setTotalDisplay(totalInput);
-      }
-      // checks for valid decimal input (eg. only one decimal point)
-      else {
-        const sanitizedTotalInput = sanitizeDecimal(totalInput);
-        setTotalDisplay(sanitizedTotalInput);
-        const newPlateCounts: plateCountType = countPlatesFromTotal(plates, parseFloat(sanitizedTotalInput));
-        setCalculatorState({ total: sanitizedTotalInput, plateCounts: newPlateCounts });
+        const newPlateCounts: plateCountType = countPlatesFromTotal(plates, parseFloat(totalInput));
+        setCalculatorState({ total: totalInput, plateCounts: newPlateCounts });
         setPlateDisplay(newPlateCounts);
       }
     }
-    setShouldRedraw(true);
   }
 
   return (
@@ -190,30 +230,34 @@ const Calculator: React.FC = () => {
         <div className='total-input-card'>
           <input
             className='total-input'
-            type='tel'
+            type='text'
             placeholder='0'
             value={totalDisplay}
             style={{ caretColor: 'black' }}
             onChange={handleTotalInput}
+            ref={(ref) => totalRef = ref}
           />
           <span className='total-unit'>{currentWeightUnit == WeightUnit.KG ? 'kg' : 'lb'}</span>
         </div>
         <span className='plate-pairs-heading'>plate pairs</span>
       </div>
       {
-        Object.entries(plateDisplay).sort(([a,], [b,]) => parseFloat(b) - parseFloat(a)).map(([weight, count]) => (
-          <InputCard
-            weight={parseFloat(weight)}
-            color={
-              parseInt(plateDisplay[weight]) <= 0
-                ? ''
-                : currentInputColors[weight.toString()]
-            }
-            count={parseInt(plateDisplay[weight])}
-            handleInput={handlePlateInput}
-            key={weight}
-          />
-        ))
+        Object.entries(plateDisplay).sort(([a,], [b,]) =>
+          parseFloat(b) - parseFloat(a)).map(([weight, count]) => (
+            <InputCard
+              weight={parseFloat(weight)}
+              color={
+                parseInt(plateDisplay[weight]) <= 0
+                  ? ''
+                  : currentInputColors[weight.toString()]
+              }
+              count={parseInt(plateDisplay[weight])}
+              handleInput={handlePlateInput}
+              key={weight}
+              plateInputRefs={plateInputRefs}
+            />
+          )
+          )
       }
     </form>
   )
@@ -222,11 +266,12 @@ const Calculator: React.FC = () => {
 interface IInputCardProps {
   weight: number,
   color: string,
-  count: number
-  handleInput: (event: ChangeEvent<HTMLInputElement>) => void;
+  count: number,
+  handleInput: (event: ChangeEvent<HTMLInputElement>) => void,
+  plateInputRefs: any[],
 };
 
-const InputCard: React.FC<IInputCardProps> = ({ weight, color, count, handleInput }) => {
+const InputCard: React.FC<IInputCardProps> = ({ weight, color, count, handleInput, plateInputRefs }) => {
   return (
     <div className='input-card'>
       <input
@@ -237,6 +282,7 @@ const InputCard: React.FC<IInputCardProps> = ({ weight, color, count, handleInpu
         style={{ color: `${color} `, caretColor: `${color} ` }}
         onChange={handleInput}
         name={`${weight} `}
+        ref={(ref) => plateInputRefs[weight] = ref}
       />
       <h3>{weight}<span className='input-unit'></span></h3>
     </div >
