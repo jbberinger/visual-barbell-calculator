@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/abaa91d3-0289-4252-988c-9433a93a236d/deploy-status)](https://app.netlify.com/sites/sharp-leakey-173f74/deploys)
 
-[Live Build](https://sharp-leakey-173f74.netlify.com/)
+[Live Build](https://VisualBarbell.netlify.com/)
 # Visual Barbell Calculator 🏋 🏋️‍♀️
 
 ## A modern barbell calculator for the web
@@ -20,10 +20,13 @@
   - [x] Ability to switch between kg and lb
 - [ ] Settings drawer
   - [x] Slides in from under navigation menu
-  - [ ] Specify barbell and collar weights
-  - [ ] Specify number of plates available
-- [ ] Optimize UI for desktop
-- [ ] Replace Canvas rect shapes with custom rounded-rect shapes
+  - [x] Specify barbell and collar weights
+  - [x] Specify number of plates available
+  - [ ] Live update inputs
+- [ ] Warnings
+- [ ] Optimized UI on desktop
+- [ ] Canvas rect shapes replaced with custom rounded-rect shapes
+- [ ] Cache settings
 
 ### Preview
 <img src="https://i.imgur.com/IyQgybQ.png" width="300">
