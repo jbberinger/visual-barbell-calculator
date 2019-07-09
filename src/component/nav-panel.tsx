@@ -18,7 +18,7 @@ const NavPanel: React.FC = () => {
       grid.style.transform = `translateY(${settingsPanel.offsetHeight}px)`;
     } else {
       // hacky fix until css height transition problem resolved
-      setTimeout(() => { settingsPanel.style.height = '0' }, 500);
+      // setTimeout(() => { settingsPanel.style.height = '0' }, 500);
       grid.style.transform = 'translateY(0)';
     }
   }

@@ -18,6 +18,8 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const [shouldRedraw, setShouldRedraw] = useContext(CanvasContext);
 
   const redraw = () => {
+    console.log(JSON.stringify(calculatorState));
+
     const {
       relBarDiameter, relSleeveDiameter, relSleeveLength,
       relFlangeDiameter, relFlangeWidth, relSleevePlusFlange,
@@ -26,8 +28,49 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       relCollarPinHeight, relCollarPinLength, relCollarTotalLength,
     } = dimension.relBarbellDimensions;
 
+    type RadiiType = {
+      topLeft: number,
+      topRight: number,
+      bottomRight: number,
+      bottomLeft: number,
+    }
+
+    const strokeAndFillRoundedRect = (
+      ctx: CanvasRenderingContext2D,
+      c: string,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      radii?: RadiiType) => {
+      if (!radii) {
+        radii = { topLeft: 5, topRight: 5, bottomRight: 5, bottomLeft: 5 };
+      }
+      ctx.beginPath();
+      ctx.moveTo(x + radii.topLeft, y);
+      ctx.lineTo(x + width - radii.topRight, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radii.topRight);
+      ctx.lineTo(x + width, y + height - radii.bottomRight);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radii.bottomRight, y + height);
+      ctx.lineTo(x + radii.bottomLeft, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radii.bottomLeft);
+      ctx.lineTo(x, y + radii.topLeft);
+      ctx.quadraticCurveTo(x, y, x + radii.topLeft, y);
+      ctx.closePath();
+      ctx.fillStyle = c;
+      ctx.fill();
+      ctx.strokeStyle = color.adjustLuminosity(c, -10);
+      ctx.stroke();
+    }
+
     // Draws rectangle and strokes a dark outline to distinguish shapes
-    const strokeAndFillRect = (ctx: CanvasRenderingContext2D, c: string, x: number, y: number, w: number, h: number) => {
+    const strokeAndFillRect = (
+      ctx: CanvasRenderingContext2D,
+      c: string,
+      x: number,
+      y: number,
+      w: number,
+      h: number) => {
       ctx.fillStyle = c;
       ctx.fillRect(x, y, w, h);
       ctx.strokeStyle = color.adjustLuminosity(c, -10);
@@ -50,31 +93,34 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       ctx.translate(0.5, 0.5);
 
       // Draws bar.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.barMetal,
         Math.round(offsetX(relBarLength, canvasWidth)),
         Math.round(offsetY(relBarDiameter, canvasHeight)),
         Math.round(canvasWidth - relSleevePlusFlange),
-        Math.round(relBarDiameter)
+        Math.round(relBarDiameter),
+        { topLeft: 0, topRight: 0, bottomRight: 0, bottomLeft: 0 },
       );
       // Draws sleeve.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.barMetal,
         Math.round(offsetX(relBarLength + relSleevePlusFlange, canvasWidth)),
         Math.round(offsetY(relSleeveDiameter, canvasHeight)),
         Math.round(relSleeveLength),
-        Math.round(relSleeveDiameter)
+        Math.round(relSleeveDiameter),
+        { topLeft: 7, topRight: 0, bottomRight: 0, bottomLeft: 7 }
       );
       // Draws flange.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.barMetal,
         Math.round(offsetX(relBarLength + relFlangeWidth, canvasWidth)),
         Math.round(offsetY(relFlangeDiameter, canvasHeight)),
         Math.round(relFlangeWidth),
-        Math.round(relFlangeDiameter)
+        Math.round(relFlangeDiameter),
+        { topLeft: 2.5, topRight: 2.5, bottomRight: 2.5, bottomLeft: 2.5 },
       );
 
       // Initializes parameters with the correct weight unit
@@ -106,40 +152,44 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       }
 
       // Draws large portion of collar.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.collarMetal,
         Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength, canvasWidth)),
         Math.round(offsetY(relCollarBigDiameter, canvasHeight)),
         Math.round(relCollarBigLength),
-        Math.round(relCollarBigDiameter)
+        Math.round(relCollarBigDiameter),
+        { topLeft: 3, topRight: 3, bottomRight: 3, bottomLeft: 3 }
       );
       // Draws small portion of collar.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.collarMetal,
         Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarTotalLength, canvasWidth)),
         Math.round(offsetY(relCollarSmallDiameter, canvasHeight)),
         Math.round(relCollarSmallLength),
-        Math.round(relCollarSmallDiameter)
+        Math.round(relCollarSmallDiameter),
+        { topLeft: 3, topRight: 0, bottomRight: 0, bottomLeft: 3 }
       );
       // Draws collar pin.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.collarMetal,
         Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength + relCollarKnobLength + relCollarPinLength * 0.28, canvasWidth)),
         Math.round(offsetY(relCollarBigDiameter + relCollarKnobHeight + relCollarPinHeight, canvasHeight)),
         Math.round(relCollarPinLength),
-        Math.round(relCollarPinHeight)
+        Math.round(relCollarPinHeight),
+        { topLeft: 3, topRight: 3, bottomRight: 3, bottomLeft: 3 },
       );
       // Draws collar knob.
-      strokeAndFillRect(
+      strokeAndFillRoundedRect(
         ctx,
         color.equipment.collarMetal,
         Math.round(offsetX(relBarLength + relFlangeWidth + offset + relCollarBigLength / 2 + relCollarKnobLength / 2, canvasWidth)),
         Math.round(offsetY(relCollarBigDiameter + relCollarKnobHeight * 2, canvasHeight)),
         Math.round(relCollarKnobLength),
-        Math.round(relCollarKnobHeight)
+        Math.round(relCollarKnobHeight),
+        { topLeft: 3, topRight: 3, bottomRight: 0, bottomLeft: 0 },
       );
 
       // Draws plates in reverse order to prevent color bleeding.
@@ -147,13 +197,14 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       for (let plateIndex = plateWeights.length - 1; plateIndex >= 0; plateIndex -= 1) {
         let platesToDraw = plateCounts[plateWeights[plateIndex]];
         while (platesToDraw > 0 && offset > 0) {
-          strokeAndFillRect(
+          strokeAndFillRoundedRect(
             ctx,
             colors[plateWeights[plateIndex].toString()],
             Math.round(offsetX(relBarLength + relFlangeWidth + offset, canvasWidth)),
             Math.round(offsetY(diameters[plateWeights[plateIndex]], canvasHeight)),
             Math.round(widths[plateWeights[plateIndex]]),
-            Math.round(diameters[plateWeights[plateIndex]])
+            Math.round(diameters[plateWeights[plateIndex]]),
+            { topLeft: 2.5, topRight: 2.5, bottomRight: 2.5, bottomLeft: 2.5 }
           );
           offset -= Math.round(widths[plateWeights[plateIndex]]);
           platesToDraw -= 1;
@@ -175,14 +226,15 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
 
   useEffect(() => {
     redraw();
-  }, [dimension])
+  })
+  // }, [dimension])
 
-  useEffect(() => {
-    if (shouldRedraw) {
-      redraw();
-      setShouldRedraw(false);
-    }
-  }, [shouldRedraw]);
+  // useEffect(() => {
+  //   if (shouldRedraw) {
+  //     redraw();
+  //     setShouldRedraw(false);
+  //   }
+  // }, [shouldRedraw]);
 
   return (
     <div className='barbell-canvas-container'>

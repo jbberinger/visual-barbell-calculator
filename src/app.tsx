@@ -10,7 +10,11 @@ import { SettingsProvider } from './context/settings-context';
 import { CanvasProvider } from './context/canvas-context'
 
 const App: React.FC = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth > 800 ? window.innerWidth / 2 : window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(
+    (window.innerWidth > 800 && window.innerHeight < 1080)
+      ? window.innerWidth / 2
+      : window.innerWidth
+  );
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
   const barWidthFromScreenWidth = (width: number): number => width * (15 / 320);
@@ -20,7 +24,11 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth / 2);
-      setScreenWidth(window.innerWidth > 800 ? window.innerWidth / 2 : window.innerWidth);
+      setScreenWidth(
+        (window.innerWidth > 800 && window.innerHeight < 1080)
+          ? window.innerWidth / 2
+          : window.innerWidth
+          );
       dimension.update(barWidthFromScreenWidth(screenWidth));
     }
     window.addEventListener('resize', handleResize);
