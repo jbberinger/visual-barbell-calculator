@@ -22,10 +22,11 @@
   - [x] Slides in from under navigation menu
   - [x] Specify barbell and collar weights
   - [x] Specify number of plates available
-  - [ ] Live update inputs
-- [ ] Warnings
-- [ ] Optimized UI on desktop
-- [ ] Canvas rect shapes replaced with custom rounded-rect shapes
+  - [x] Live update inputs
+  - [ ] Presets for basic/advanced users
+- [x] Warnings
+- [x] Optimized UI on desktop
+- [x] Canvas rect shapes replaced with custom rounded-rect shapes
 - [ ] Cache settings
 
 ### Preview
