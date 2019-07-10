@@ -154,7 +154,6 @@ const Calculator: React.FC = () => {
 
   // handles plate count inputs
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
-    debugger;
     console.log('handle plate input');
     const name: string | null = event.target.getAttribute('name');
     // ensures name attribute exists
@@ -200,7 +199,6 @@ const Calculator: React.FC = () => {
     console.log('handle total input');
     const plates = Object.keys(plateDisplay);
     let totalInput: string = event.target.value;
-    debugger;
     // protects against double zero total
     if (totalInput !== '00') {
       // displays 0 when cleared

@@ -1,4 +1,4 @@
-import React, { useContext, ChangeEvent, useEffect } from 'react';
+import React, { useContext, ChangeEvent, useState } from 'react';
 import { SettingsContext, defaultSettingsState } from '../context/settings-context';
 
 // Settings drawer to control plates available and barbell/collar weights
@@ -7,9 +7,19 @@ const SettingsPanel: React.FC<any> = () => {
   const { plates } = settingsState;
   const kgPlateList: string[] = Object.keys(plates.kg).sort((a, b) => parseFloat(b) - parseFloat(a));
   const lbPlateList: string[] = Object.keys(plates.lb).sort((a, b) => parseFloat(b) - parseFloat(a));
+  const [localEquipmentState, setLocalEquipmentState] = useState<any>({
+    barbell: {
+      kg: settingsState.equipment.barbell.kg.toString(),
+      lb: settingsState.equipment.barbell.lb.toString(),
+    },
+    collar: {
+      kg: settingsState.equipment.collar.kg.toString(),
+      lb: settingsState.equipment.collar.lb.toString(),
+    }
+  });
 
   // Ensures string is a valid decimal
-  const sanitizeDecimal = (input: string): string => `${parseFloat(input.replace(/[^0-9.]/g, ''))}`;
+  const sanitizeDecimal = (input: string): string => `${input.replace(/[^0-9.]/g, '')}`;
 
   // Checks if value is positive and numeric with no spaces
   const isPositiveNumeric = (value: any): boolean => {
@@ -31,36 +41,47 @@ const SettingsPanel: React.FC<any> = () => {
     let value = event.target.value;
 
     /////////
-
+    const updatedEquipmentState = { ...localEquipmentState };
     if (value !== '00') {
       // displays 0 when cleared
-      if (value === '') {
-        value = '0';
-        updatedSettings.equipment[equipment].lb = 0;
-        updatedSettings.equipment[equipment].kg = 0;
-        setSettingsState(updatedSettings);
+      if (value === '' || value === '0') {
+        updatedEquipmentState[equipment].kg = '0';
+        updatedEquipmentState[equipment].lb = '0';
+        setLocalEquipmentState(updatedEquipmentState);
       }
       // prefixes 0 to decimal numbers < 0
-      else if (value === '.') {
-        value = '0.';
-        updatedSettings.equipment[equipment].lb = value;
-        updatedSettings.equipment[equipment].kg = value;
-        setSettingsState(updatedSettings);  
+      else if (value === '0.') {
+        updatedEquipmentState[equipment][unit] = '0.';
+        setLocalEquipmentState(updatedEquipmentState);
       }
       // checks for valid decimal number input
       else if (isPositiveNumeric(value)) {
-        // Converts and updates other unit 
-        let convertedValue: number;
-        if (unit === 'kg') {
-          convertedValue = Math.round(parseFloat(value) * kgToLbFactor * 100) / 100;
-          updatedSettings.equipment[equipment].lb = convertedValue;
+        // strips leading 0 if not part of decimal
+        if (value[0] === '0' && value[1] !== '.') {
+          value = value.slice(1);
+        }
+        const updatedSettingsState = { ...settingsState };
+        // checks if input is the start of a decimal
+        // prevents conversion if input ends with a period
+        if (value[value.length - 1] === '.') {
+          updatedEquipmentState[equipment][unit] = value;
         } else {
-          convertedValue = Math.round(parseFloat(value) / kgToLbFactor * 100) / 100;
-          updatedSettings.equipment[equipment].kg = convertedValue;
+          // Converts and updates other equipment unit 
+          let convertedValue: number;
+          if (unit === 'kg') {
+            convertedValue = Math.round(parseFloat(value) * kgToLbFactor * 100) / 100;
+            updatedEquipmentState[equipment].lb = convertedValue.toString();
+            updatedSettingsState.equipment[equipment].lb = convertedValue;
+          } else {
+            convertedValue = Math.round(parseFloat(value) / kgToLbFactor * 100) / 100;
+            updatedEquipmentState[equipment].kg = convertedValue.toString();
+            updatedSettingsState.equipment[equipment].kg = convertedValue;
+          }
+          updatedEquipmentState[equipment][unit] = value;
+          setSettingsState(updatedSettingsState);
         }
 
-        updatedSettings.equipment[equipment][unit] = parseFloat(value);
-        setSettingsState(updatedSettings);
+        setLocalEquipmentState(updatedEquipmentState);
       }
     }
   }
@@ -86,7 +107,7 @@ const SettingsPanel: React.FC<any> = () => {
               <EquipmentSettingCard
                 unit='kg'
                 equipment='barbell'
-                currentValue={settingsState}
+                currentValue={localEquipmentState.barbell.kg}
                 handleEquipmentInput={
                   (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'kg', event)
                 }
@@ -94,7 +115,7 @@ const SettingsPanel: React.FC<any> = () => {
               <EquipmentSettingCard
                 unit='lb'
                 equipment='barbell'
-                currentValue={settingsState}
+                currentValue={localEquipmentState.barbell.lb}
                 handleEquipmentInput={
                   (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'lb', event)
                 }
@@ -107,7 +128,7 @@ const SettingsPanel: React.FC<any> = () => {
               <EquipmentSettingCard
                 unit='kg'
                 equipment='collar'
-                currentValue={settingsState}
+                currentValue={localEquipmentState.collar.kg}
                 handleEquipmentInput={
                   (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'kg', event)
                 }
@@ -115,7 +136,7 @@ const SettingsPanel: React.FC<any> = () => {
               <EquipmentSettingCard
                 unit='lb'
                 equipment='collar'
-                currentValue={settingsState}
+                currentValue={localEquipmentState.collar.lb}
                 handleEquipmentInput={
                   (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'lb', event)
                 }
@@ -175,12 +196,8 @@ const EquipmentSettingCard: React.FC<any> = ({ unit, equipment, currentValue, ha
       <div className='setting-input-container'>
         <label>
           <input
-            type='text'
-            value={
-              currentValue.equipment[equipment][unit] != 0
-                ? currentValue.equipment[equipment][unit]
-                : ''
-            }
+            type='search'
+            value={currentValue}
             placeholder='0'
             onChange={handleEquipmentInput}
           />
