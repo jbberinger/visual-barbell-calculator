@@ -11,6 +11,11 @@ const SettingsPanel: React.FC<any> = () => {
   // Ensures string is a valid decimal
   const sanitizeDecimal = (input: string): string => `${parseFloat(input.replace(/[^0-9.]/g, ''))}`;
 
+  // Checks if value is positive and numeric with no spaces
+  const isPositiveNumeric = (value: any): boolean => {
+    return !isNaN(value - parseFloat(value)) && parseFloat(value) > 0 && value === sanitizeDecimal(value)
+  };
+
   const handlePlateSelect = (unit: string, plate: string, event: ChangeEvent<HTMLButtonElement>) => {
     console.log('handle plate select');
     const updatedSettings = { ...settingsState };
@@ -24,24 +29,40 @@ const SettingsPanel: React.FC<any> = () => {
     const updatedSettings = { ...settingsState };
 
     let value = event.target.value;
-    if (value === '') {
-      value = '0';
-    } else {
-      value = sanitizeDecimal(event.target.value);
-    }
 
-    // Converts and updates other unit 
-    let convertedValue: number;
-    if (unit === 'kg') {
-      convertedValue = Math.round(parseFloat(value) * kgToLbFactor * 100) / 100;
-      updatedSettings.equipment[equipment].lb = convertedValue;
-    } else {
-      convertedValue = Math.round(parseFloat(value) / kgToLbFactor * 100) / 100;
-      updatedSettings.equipment[equipment].kg = convertedValue;
-    }
+    /////////
 
-    updatedSettings.equipment[equipment][unit] = parseFloat(value);
-    setSettingsState(updatedSettings);
+    if (value !== '00') {
+      // displays 0 when cleared
+      if (value === '') {
+        value = '0';
+        updatedSettings.equipment[equipment].lb = 0;
+        updatedSettings.equipment[equipment].kg = 0;
+        setSettingsState(updatedSettings);
+      }
+      // prefixes 0 to decimal numbers < 0
+      else if (value === '.') {
+        value = '0.';
+        updatedSettings.equipment[equipment].lb = value;
+        updatedSettings.equipment[equipment].kg = value;
+        setSettingsState(updatedSettings);
+      }
+      // checks for valid decimal number input
+      else if (isPositiveNumeric(value)) {
+        // Converts and updates other unit 
+        let convertedValue: number;
+        if (unit === 'kg') {
+          convertedValue = Math.round(parseFloat(value) * kgToLbFactor * 100) / 100;
+          updatedSettings.equipment[equipment].lb = convertedValue;
+        } else {
+          convertedValue = Math.round(parseFloat(value) / kgToLbFactor * 100) / 100;
+          updatedSettings.equipment[equipment].kg = convertedValue;
+        }
+
+        updatedSettings.equipment[equipment][unit] = parseFloat(value);
+        setSettingsState(updatedSettings);
+      }
+    }
   }
 
   // Resets all settings to default values
@@ -154,7 +175,7 @@ const EquipmentSettingCard: React.FC<any> = ({ unit, equipment, currentValue, ha
       <div className='setting-input-container'>
         <label>
           <input
-            type='tel'
+            type='text'
             value={
               currentValue.equipment[equipment][unit] != 0
                 ? currentValue.equipment[equipment][unit]

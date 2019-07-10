@@ -99,7 +99,7 @@ type settingsStateType = typeof initialSettingsState;
 export const SettingsContext = createContext<settingsStateType | any>(undefined);
 
 export const SettingsProvider = (props: any) => {
-  const [settingsState, setSettingsState] = useState<settingsStateType>(initialSettingsState);
+  const [settingsState, setSettingsState] = useState<settingsStateType | any>(initialSettingsState);
   const [warning, setWarning] = useState<Warning>();
   const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
   return (

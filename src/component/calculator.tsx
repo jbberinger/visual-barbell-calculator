@@ -154,6 +154,7 @@ const Calculator: React.FC = () => {
 
   // handles plate count inputs
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
+    debugger;
     console.log('handle plate input');
     const name: string | null = event.target.getAttribute('name');
     // ensures name attribute exists
@@ -225,7 +226,7 @@ const Calculator: React.FC = () => {
   }
 
   return (
-    <form className='weights-container' autoComplete='off'>
+    <form className='weights-container' autoComplete="new-password">
       <div className='total-container'>
         <div className='total-input-card'>
           <input
