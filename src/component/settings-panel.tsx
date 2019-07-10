@@ -45,7 +45,7 @@ const SettingsPanel: React.FC<any> = () => {
         value = '0.';
         updatedSettings.equipment[equipment].lb = value;
         updatedSettings.equipment[equipment].kg = value;
-        setSettingsState(updatedSettings);
+        setSettingsState(updatedSettings);  
       }
       // checks for valid decimal number input
       else if (isPositiveNumeric(value)) {
