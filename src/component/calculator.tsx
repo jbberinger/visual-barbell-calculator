@@ -63,12 +63,15 @@ const Calculator: React.FC = () => {
     console.log('init plates');
     const { lb, kg } = settingsState.plates;
     let plates: string[];
+    console.log(currentWeightUnit);
     if (currentWeightUnit === WeightUnit.KG) {
       plates = Object.keys(kg).filter(plate => kg[plate] > 0);
     } else {
       plates = Object.keys(lb).filter(plate => lb[plate] > 0);
     }
+    console.log(plates);
     const initPlateCount = countPlatesFromTotal(plates, calculatorState.total);
+    console.log(initPlateCount);
     return initPlateCount;
   }
 
@@ -87,7 +90,7 @@ const Calculator: React.FC = () => {
     let updatedPlateCount: plateCountType;
     const total = calculatorState.total;
     // Converts total and plate counts to appropriate unit.
-    if (currentWeightUnit == WeightUnit.KG) {
+    if (currentWeightUnit === WeightUnit.KG) {
       const kg = settingsState.plates.kg;
       const plates = Object.keys(kg).filter(plate => kg[plate] > 0);
       updatedPlateCount = countPlatesFromTotal(plates, total);
@@ -108,7 +111,7 @@ const Calculator: React.FC = () => {
     console.log('convertedTotal effect triggered');
     let updatedPlateCount: plateCountType;
     // Converts total and plate counts to appropriate unit.
-    if (currentWeightUnit == WeightUnit.KG) {
+    if (currentWeightUnit === WeightUnit.KG) {
       const kg = settingsState.plates.kg;
       const plates = Object.keys(kg).filter(plate => kg[plate] > 0);
       updatedPlateCount = countPlatesFromTotal(plates, convertedTotal);
@@ -122,7 +125,7 @@ const Calculator: React.FC = () => {
     setTotalDisplay(convertedTotal === 0 ? '' : convertedTotal.toString());
     setPlateDisplay(updatedPlateCount);
     setCalculatorState({ total: convertedTotal, plateCounts: updatedPlateCount });
-  }, [convertedTotal])
+  }, [convertedTotal, currentWeightUnit])
 
   // Sets warnings
   useEffect(() => {

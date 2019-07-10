@@ -17,8 +17,6 @@ const NavPanel: React.FC = () => {
       settingsPanel.style.height = 'initial';
       grid.style.transform = `translateY(${settingsPanel.offsetHeight}px)`;
     } else {
-      // hacky fix until css height transition problem resolved
-      // setTimeout(() => { settingsPanel.style.height = '0' }, 500);
       grid.style.transform = 'translateY(0)';
     }
   }
@@ -28,16 +26,18 @@ const NavPanel: React.FC = () => {
     const kgToLbFactor = 2.20462262;
     const weightUnit: WeightUnit = parseInt(event.target.value);
     console.log(weightUnit);
-    const total = calculatorState.total;
+    let total = calculatorState.total;
     let convertedTotal: number = 0;
     setCurrentWeightUnit(weightUnit);
-    if (total !== '') {
-      if (weightUnit === WeightUnit.KG) {
-        convertedTotal = Math.round(parseFloat(total) / kgToLbFactor * 100) / 100;
-      } else {
-        convertedTotal = Math.round(parseFloat(total) * kgToLbFactor * 100) / 100;
-      }
+    if (total === '') {
+      total = '0';
     }
+    if (weightUnit === WeightUnit.KG) {
+      convertedTotal = Math.round(parseFloat(total) / kgToLbFactor * 100) / 100;
+    } else {
+      convertedTotal = Math.round(parseFloat(total) * kgToLbFactor * 100) / 100;
+    }
+
     setConvertedTotal(convertedTotal);
   }
 

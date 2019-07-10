@@ -10,7 +10,7 @@ const initialCalculatorState = {
   total: 0,
   plateCounts: {
     // initializes object to 0's with reducer function
-    ...kgPlateWeights.reduce((stateObj, weight) => {
+    ...lbPlateWeights.reduce((stateObj, weight) => {
       stateObj[weight] = '0';
       return stateObj;
     }, initial)
