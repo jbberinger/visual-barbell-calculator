@@ -44,29 +44,28 @@ const NavPanel: React.FC = () => {
   return (
     <nav className='nav'>
       <form>
-        <label style={{ color: `${currentWeightUnit === WeightUnit.KG ? 'white' : ''}` }}>
-
-          <input
-            type='radio'
-            name='weightUnit'
-            className='nav-unit-radio'
-            defaultChecked={true}
-            value={WeightUnit.KG}
-            onChange={handleWeightUnit}
-          />
-          kg
-          </label>
         <label style={{ color: `${currentWeightUnit === WeightUnit.LB ? 'white' : ''}` }}>
           <input
             type='radio'
             name='weightUnit'
             className='nav-unit-radio'
-            defaultChecked={false}
+            defaultChecked={true}
             value={WeightUnit.LB}
             onChange={handleWeightUnit}
           />
           lb
-          </label>
+        </label>
+        <label style={{ color: `${currentWeightUnit === WeightUnit.KG ? 'white' : ''}` }}>
+          <input
+            type='radio'
+            name='weightUnit'
+            className='nav-unit-radio'
+            defaultChecked={false}
+            value={WeightUnit.KG}
+            onChange={handleWeightUnit}
+          />
+          kg
+        </label>
       </form>
       <button className='nav-button' onClick={handleSettingsButton}>settings</button>
     </nav>

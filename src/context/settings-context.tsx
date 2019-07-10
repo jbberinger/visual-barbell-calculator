@@ -63,30 +63,30 @@ const initialSettingsState = {
       lb: 45,
     },
     collar: {
-      kg: 5,
-      lb: 11.02,
+      kg: 0,
+      lb: 0,
     },
   },
   plates: {
     kg: {
       '50': 0,
-      '25': 10,
-      '15': 10,
-      '10': 10,
-      '5': 10,
-      '2.5': 10,
-      '1.25': 10,
+      '25': Infinity,
+      '15': Infinity,
+      '10': Infinity,
+      '5': Infinity,
+      '2.5': Infinity,
+      '1.25': Infinity,
       '0.5': 0,
       '0.25': 0,
     },
     lb: {
       '55': 0,
-      '45': 10,
-      '35': 10,
-      '25': 10,
-      '10': 10,
-      '5': 10,
-      '2.5': 10,
+      '45': Infinity,
+      '35': Infinity,
+      '25': Infinity,
+      '10': Infinity,
+      '5': Infinity,
+      '2.5': Infinity,
       '1': 0,
       '0.5': 0,
       '0.25': 0,
@@ -101,7 +101,7 @@ export const SettingsContext = createContext<settingsStateType | any>(undefined)
 export const SettingsProvider = (props: any) => {
   const [settingsState, setSettingsState] = useState<settingsStateType | any>(initialSettingsState);
   const [warning, setWarning] = useState<Warning>();
-  const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.KG);
+  const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.LB);
   return (
     <SettingsContext.Provider
       value={[settingsState, setSettingsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit]}>
