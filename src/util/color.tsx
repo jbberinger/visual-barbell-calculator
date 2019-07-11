@@ -17,12 +17,13 @@ const color = {
       '0.5': 'hsl(0, 0%, 75.3%)',
       '0.25': 'hsl(0, 0%, 75.3%)',
     },
-    // Eye dropped calibrate 
+    // Eye dropped calibrated Rogue plates
     lb: {
       '55': 'hsl(355, 64%, 34%)',
       '45': 'hsl(215, 50%, 31%)',
       '35': 'hsl(47, 99%, 41%)',
       '25': 'hsl(120, 100%, 27%)',
+      '15': 'hsl(330, 3%, 18%)',
       '10': 'hsl(0, 0%, 89%)',
       '5': 'hsl(330, 3%, 13%)',
       '2.5': 'hsl(0, 0%, 66%)',
@@ -31,7 +32,7 @@ const color = {
       '0.25': 'hsl(0, 0%, 66%)',
     }
   },
-  // Based on plate color, but optimized for visibility.
+  // Based on plate colors, but optimized for visibility.
   inputText: {
     kg: {
       '50': 'hsl(0, 0%, 17%)',
@@ -50,6 +51,7 @@ const color = {
       '45': 'hsl(215, 50%, 31%)',
       '35': 'hsl(47, 99%, 41%)',
       '25': 'hsl(120, 100%, 27%)',
+      '15': 'hsl(330, 3%, 18%)',
       '10': 'hsl(0, 0%, 100%)',
       '5': 'hsl(330, 3%, 13%)',
       '2.5': 'hsl(0, 0%, 66%)',

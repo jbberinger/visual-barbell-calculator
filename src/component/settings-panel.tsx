@@ -26,21 +26,18 @@ const SettingsPanel: React.FC<any> = () => {
     return !isNaN(value - parseFloat(value)) && parseFloat(value) > 0 && value === sanitizeDecimal(value)
   };
 
+  // 
   const handlePlateSelect = (unit: string, plate: string, event: ChangeEvent<HTMLButtonElement>) => {
-    console.log('handle plate select');
     const updatedSettings = { ...settingsState };
     updatedSettings.plates[unit][plate] = parseFloat(event.target.value);
     setSettingsState(updatedSettings);
   }
 
+  //  Sanitizes input and converts to other unit if necessary
   const handleEquipmentInput = (equipment: string, unit: string, event: ChangeEvent<HTMLButtonElement>) => {
     const kgToLbFactor = 2.20462262;
-    console.log('handle equipment input');
-    const updatedSettings = { ...settingsState };
-
     let value = event.target.value;
 
-    /////////
     const updatedEquipmentState = { ...localEquipmentState };
     if (value !== '00') {
       // displays 0 when cleared
@@ -196,7 +193,7 @@ const EquipmentSettingCard: React.FC<any> = ({ unit, equipment, currentValue, ha
       <div className='setting-input-container'>
         <label>
           <input
-            type='search'
+            type='text'
             value={currentValue}
             placeholder='0'
             onChange={handleEquipmentInput}

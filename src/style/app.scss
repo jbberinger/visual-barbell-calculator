@@ -28,6 +28,7 @@ $nav-color: #424242;
 
 button {
   cursor: pointer;
+  letter-spacing: 0.05em;
 }
 
 html,
@@ -60,7 +61,8 @@ h3 {
   left: 0;
   width: 100%;
   margin-top: 2.75em;
-  z-index: 1000;
+  min-height: 100vh;
+  z-index: 2;
   display: grid;
   align-items: center;
   justify-content: flex-end;
@@ -134,6 +136,7 @@ h3 {
   max-width: 500px;
   min-width: 0;
   justify-self: center;
+  font-size: 3.5vw;
 }
 
 .total-container {
@@ -213,23 +216,23 @@ h3 {
   justify-content: flex-start;
   position: relative;
   width: 100%;
-  height: 0;
+  height: 100%;
   padding: 10px 0px;
   z-index: 0;
-  max-height: 45vh;
   background: grey;
   color: #111111;
   overflow-y: scroll;
-  font-size: 0.7em;
+  font-size: 3.5vw; // 'magic' scaling number
   input {
     font-size: 1.1em;
   }
   h4 {
-    font-size: 15px;
+    font-size: 1em;
     padding: 0;
     font-size: 1.1em;
     font-weight: normal;
     border-bottom: 1px solid $nav-color;
+    width: auto;
   }
   :focus {
     outline-color: black;
@@ -273,6 +276,7 @@ h3 {
     max-height: min-content;
     padding: 0 5px;
     h4 {
+      font-size: 1.25em;
       text-align: center;
       margin: 0;
       margin-bottom: 3px;
@@ -288,7 +292,7 @@ h3 {
       justify-content: center;
       padding: 0 2px;
       input {
-        width: 50px;
+        width: 2.5em;
       }
     }
     .equipment-unit {
@@ -302,13 +306,9 @@ h3 {
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-evenly;
-  input {
-    width: 40px;
-    text-align: center;
-  }
   select {
     background: $background-color;
-    font-size: 1.1em;
+    font-size: 0.8em;
     cursor: pointer;
   }
   .plate-group {
@@ -320,6 +320,7 @@ h3 {
     justify-content: center;
     width: auto;
     h4 {
+      font-size: 1.25em;
       grid-column: 1/3 span;
       text-align: center;
       margin: 0;
@@ -368,6 +369,51 @@ h3 {
   }
 }
 
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  grid-area: footer;
+  background: $nav-color;
+  min-height: 3em;
+  align-self: flex-end;
+  color: $background-color;
+  padding: 5px 0;
+  h5 {
+    padding: 0;
+    margin: 0;
+    letter-spacing: 0.12em;
+  }
+  a {
+    text-decoration: none;
+    color: $background-color;
+    transition: 0.2s ease;
+    &:hover {
+      color: white;
+    }
+    &:active:after {
+      color: white;
+    }
+  }
+  .footer-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+  }
+  .footer-icon {
+    height: 15px;
+    padding: 0 5px;
+    filter: invert(97%) sepia(0%) saturate(21%) hue-rotate(145deg) brightness(93%) contrast(89%);
+  }
+  .footer-repo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media only screen and (min-width: 800px) {
   .settings-panel {
     grid-area: settings;
@@ -379,7 +425,7 @@ h3 {
     width: 100%;
     height: 0;
     padding: 10px 0px;
-    z-index: 0;
+    // z-index: 0;
     max-height: 45vh;
     background: grey;
     color: #111111;

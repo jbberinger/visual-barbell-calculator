@@ -28,7 +28,6 @@ const Calculator: React.FC = () => {
 
   // Greedy algorithm for calculating plate pair counts from heaviest to lightest
   const countPlatesFromTotal = (plateWeights: string[], total: number): plateCountType => {
-    console.log(`recalculated plates with total: ${total} and equipmentWeight: ${calculateTotalEquipmentWeight()}`);
     let plateCounts: plateCountType = {};
     const unit = currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb';
     let remainingWeight = total - calculateTotalEquipmentWeight();
@@ -60,18 +59,14 @@ const Calculator: React.FC = () => {
 
   // Initializes plates based on current weight unit and total.
   const initPlates = () => {
-    console.log('init plates');
     const { lb, kg } = settingsState.plates;
     let plates: string[];
-    console.log(currentWeightUnit);
     if (currentWeightUnit === WeightUnit.KG) {
       plates = Object.keys(kg).filter(plate => kg[plate] > 0);
     } else {
       plates = Object.keys(lb).filter(plate => lb[plate] > 0);
     }
-    console.log(plates);
     const initPlateCount = countPlatesFromTotal(plates, calculatorState.total);
-    console.log(initPlateCount);
     return initPlateCount;
   }
 
@@ -86,7 +81,6 @@ const Calculator: React.FC = () => {
 
   // Triggered when settings change
   useEffect(() => {
-    console.log('settingsState effect triggered')
     let updatedPlateCount: plateCountType;
     const total = calculatorState.total;
     // Converts total and plate counts to appropriate unit.
@@ -108,7 +102,6 @@ const Calculator: React.FC = () => {
 
   // Triggered when convertedTotal changes
   useEffect(() => {
-    console.log('convertedTotal effect triggered');
     let updatedPlateCount: plateCountType;
     // Converts total and plate counts to appropriate unit.
     if (currentWeightUnit === WeightUnit.KG) {
@@ -145,7 +138,6 @@ const Calculator: React.FC = () => {
     // determined by current settings
     let maxTotal: number = calculateTotalEquipmentWeight();
     for (let plate in plateDisplay) {
-      console.log(plate);
       maxTotal += parseFloat(plate) * settingsState.plates[unit][plate] * 2;
     }
     if (parseFloat(totalDisplay) > maxTotal) {
@@ -157,7 +149,6 @@ const Calculator: React.FC = () => {
 
   // handles plate count inputs
   const handlePlateInput = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('handle plate input');
     const name: string | null = event.target.getAttribute('name');
     // ensures name attribute exists
     if (name) {
@@ -199,7 +190,6 @@ const Calculator: React.FC = () => {
 
   // handles total weight input
   const handleTotalInput = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('handle total input');
     const plates = Object.keys(plateDisplay);
     let totalInput: string = event.target.value;
     // protects against double zero total
@@ -239,9 +229,9 @@ const Calculator: React.FC = () => {
             onChange={handleTotalInput}
             ref={(ref) => totalRef = ref}
           />
-          <span className='total-unit'>{currentWeightUnit == WeightUnit.KG ? 'kg' : 'lb'}</span>
+          <span className='total-unit'>{currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb'}</span>
         </div>
-        <span className='plate-pairs-heading'>plate pairs</span>
+        <span className='plate-pairs-heading'>plates per side</span>
       </div>
       {
         Object.entries(plateDisplay).sort(([a,], [b,]) =>

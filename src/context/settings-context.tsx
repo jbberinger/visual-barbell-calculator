@@ -1,7 +1,5 @@
 import React, { useState, createContext } from 'react'
 
-// This context stores the settings state
-
 export enum WeightUnit {
   KG,
   LB
@@ -13,15 +11,11 @@ export enum Warning {
   ROUNDED_DOWN, // Total was rounded down to accomodate available plates
 }
 
-// Default state for settings. Also used to reset settings.
-//
-// weightUnit: current calculator weight unit
-// equipment: barbell/collar weights and if collar is used
-// plates: plate pairs available
+// Default state
 export const defaultSettingsState = {
   equipment: {
     barbell: {
-      kg: 20,
+      kg: 20.41,
       lb: 45,
     },
     collar: {
@@ -46,6 +40,7 @@ export const defaultSettingsState = {
       '45': Infinity,
       '35': Infinity,
       '25': Infinity,
+      '15': 0,
       '10': Infinity,
       '5': Infinity,
       '2.5': Infinity,
@@ -59,7 +54,7 @@ export const defaultSettingsState = {
 const initialSettingsState = {
   equipment: {
     barbell: {
-      kg: 20,
+      kg: 20.41,
       lb: 45,
     },
     collar: {
@@ -84,6 +79,7 @@ const initialSettingsState = {
       '45': Infinity,
       '35': Infinity,
       '25': Infinity,
+      '15': 0,
       '10': Infinity,
       '5': Infinity,
       '2.5': Infinity,

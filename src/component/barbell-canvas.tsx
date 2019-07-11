@@ -221,7 +221,6 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   }
 
   useEffect(() => {
-    console.log('use canvas effect')
     redraw();
   }, [dimension, calculatorState]);
 

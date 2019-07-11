@@ -1,15 +1,13 @@
-// All dimensions are in mm and based on real world data sheets.
+// All dimensions are in mm and mostly based on real world data sheets.
 // Relative dimensions are computed based on relative bar diameter.
 class Dimension {
-  // Dimensions in mm from IPF regulation Eleiko barbell datasheet. Any 
-  // measurements not listed by Eleiko have been estimated.
   barbellDimensions = {
     barDiameter: 29,
     sleeveDiameter: 52,
     sleeveLength: 433,
     flangeDiameter: 84, // best estimate
     flangeWidth: 12,
-    // collarTotalLength: 110,
+    // collarTotalLength: 110, // larger collar dimensions
     // collarBigDiameter: 93,
     // collarSmallDiameter: 73,
     // collarPinLength: 93,
@@ -18,7 +16,7 @@ class Dimension {
     // collarSmallLength: 49.50,
     // collarKnobHeight: 23.25,
     // collarKnobLength: 18.15,
-    collarTotalLength: 55,
+    collarTotalLength: 55, // smaller collar dimensions
     collarBigDiameter: 93,
     collarSmallDiameter: 73,
     collarPinLength: 46.5,
@@ -50,7 +48,6 @@ class Dimension {
 
   plateDimensions = {
     // All but 100kg paralympic plate are IPF regulation Eleiko plates
-    // Weight reference (kg): [50, 25, 15, 10, 5, 2.5, 1.25, 0.5, 0.25]
     kg: {
       kgPlateDiameters: {
         '50': 450,
@@ -75,14 +72,14 @@ class Dimension {
         '0.25': 6,
       },
     },
-    // Rogue calibrated lb steel plate dimensions
-    // Weight reference (lb): [55, 45, 35, 25, 10, 5, 2.5, 1, 0.5, 0.25]
+    // Rogue calibrated lb steel plate dimensions (with an extra 15lb plate)
     lb: {
       lbPlateDiameters: {
         '55': 450,
         '45': 450,
         '35': 400,
         '25': 325,
+        '15': 280,
         '10': 228,
         '5': 190,
         '2.5': 160,
@@ -95,6 +92,7 @@ class Dimension {
         '45': 22,
         '35': 21,
         '25': 23,
+        '15': 21,
         '10': 19,
         '5': 14.5,
         '2.5': 10,

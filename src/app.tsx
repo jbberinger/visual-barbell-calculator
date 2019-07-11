@@ -5,6 +5,7 @@ import BarbellCanvas from './component/barbell-canvas';
 import Calculator from './component/calculator';
 import SettingsPanel from './component/settings-panel';
 import NavPanel from './component/nav-panel';
+import Footer from './component/footer';
 import { CalculatorProvider } from './context/calculator-context';
 import { SettingsProvider } from './context/settings-context';
 
@@ -48,6 +49,7 @@ const App: React.FC = () => {
               dimension={dimension}
               screenWidth={screenWidth}
             />
+            <Footer />
           </main>
         </div>
       </CalculatorProvider>
