@@ -28,11 +28,11 @@ const Footer: React.FC = () => {
       <a href="https://github.com/jbberinger/visual-barbell-calculator" target="_blank" rel="noopener noreferrer"><h5>Designed & Built by Justin Beringer</h5>
         <div className='footer-repo-container'>
           <div className='footer-icon-container'>
-            <img src={forkIcon} className="footer-icon" alt="instagram icon" />
+            <img src={forkIcon} className="footer-icon-fork" alt="instagram icon" />
             <div className='footer-repo-info'>{` ${repoInfo[0]}`}</div>
           </div>
           <div className='footer-icon-container'>
-            <img src={starIcon} className="footer-icon" alt="instagram icon" />
+            <img src={starIcon} className="footer-icon-star" alt="instagram icon" />
             <div className='footer-repo-info'>{` ${repoInfo[1]}`}</div>
           </div>
         </div>

@@ -138,7 +138,9 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       // Finds total diameter (offset) for plates and collar so they can
       // be drawn in reverse order (left to right) to minimize color bleeding.
       for (const plate in plateCounts) {
-        let offsetWidth = Math.round(widths[plate]) * plateCounts[plate];
+        // Sets 40 plate count limit
+        let count = plateCounts[plate] <= 40 ? plateCounts[plate] : 40;
+        let offsetWidth = Math.round(widths[plate]) * count;
         offset += offsetWidth ? offsetWidth : 0;
       }
 
@@ -192,6 +194,8 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       const plateWeights = [...Object.keys(plateCounts).sort((a, b) => parseFloat(b) - parseFloat(a))];
       for (let plateIndex = plateWeights.length - 1; plateIndex >= 0; plateIndex -= 1) {
         let platesToDraw = plateCounts[plateWeights[plateIndex]];
+        // Sets 40 plate count limit
+        platesToDraw = platesToDraw <= 40 ? platesToDraw : 40;
         while (platesToDraw > 0 && offset > 0) {
           strokeAndFillRoundedRect(
             ctx,
