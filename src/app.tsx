@@ -13,16 +13,14 @@ const App: React.FC = () => {
   // Calculates canvas width from screen width with constraints.
   //
   // Media query constraints:
-  // @media (min-width: 800px) and (min-height: 1080px)
-  // 
+  // @media only screen and (min-width: 800px) and (min-aspect-ratio: 1/1)
   const canvasWidthFromScreenWidth = (): number => {
-    return (window.innerWidth > 800 && window.innerHeight < 1080)
+    return (window.innerWidth > 800 && window.innerHeight < window.innerWidth)
       ? window.innerWidth / 2
       : window.innerWidth > 315 ? window.innerWidth : 315;
   }
 
   const [screenWidth, setScreenWidth] = useState(canvasWidthFromScreenWidth());
-  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
   // Calculates bar width relative to screen width with 'magic ratio'
   const barWidthFromScreenWidth = (width: number): number => width * (15 / 320);

@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans|Oxygen+Mono&display=swap");
 
-// variables //
+//// variables ////
 
 $background-color: #dadada;
 $nav-color: #424242;
 $min-width: 315px;
 
-// mixins //
+//// mixins ////
 
 @mixin input-styling {
   padding: 0;
@@ -33,6 +33,8 @@ $min-width: 315px;
   align-items: $align;
   justify-content: $justify;
 }
+
+//// styles ////
 
 button {
   cursor: pointer;
@@ -70,7 +72,7 @@ h3 {
   width: 100%;
   min-width: $min-width;
   margin-top: 2.75em;
-  min-height: 100vh;
+  min-height: 105vh;
   z-index: 2;
   display: grid;
   align-items: center;
@@ -141,10 +143,10 @@ h3 {
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-width: 500px;
+  max-width: 90vw;
   min-width: 0;
   justify-self: center;
-  font-size: 5vw;
+  font-size: 5vw; // 'magic' number
 }
 
 .total-container {
@@ -202,6 +204,7 @@ h3 {
 .barbell-canvas-container {
   grid-area: canvas;
   text-align: right;
+  padding: 10px 0;
   .barbell-canvas {
     padding: 0;
     margin: 0;
@@ -211,20 +214,23 @@ h3 {
 }
 
 .settings-panel {
-  grid-area: settings;
-  @include flex(center, flex-start, column);
   position: relative;
   width: 100%;
   min-width: $min-width;
   height: 100%;
-  padding: 10px 0px;
+  padding: 10px 0;
   z-index: 0;
   background: grey;
   color: #111111;
   overflow-y: scroll;
   font-size: 4.3vw; // 'magic' scaling number
   form {
-    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 3px;
   }
   h4 {
     padding: 0;
@@ -241,9 +247,16 @@ h3 {
   }
 }
 
-.settings-equipment {
-  @include flex(initial, space-evenly);
-  width: 100%;
+.equipment-group {
+  white-space: nowrap;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content;
+  align-items: center;
+  justify-content: flex-start;
+  grid-gap: 5px;
+  min-width: 100%;
+  max-height: min-content;
   input {
     text-align: center;
     background: $background-color;
@@ -261,64 +274,56 @@ h3 {
       opacity: 0;
     }
   }
-  .equipment-group {
-    white-space: nowrap;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: min-content;
-    align-items: center;
-    justify-content: flex-start;
-    grid-gap: 5px;
-    max-width: 100%;
-    max-height: min-content;
+  h4 {
+    grid-column: 1/2 span;
+    font-size: 1.1em;
+    margin: 0;
+    margin-bottom: 3px;
+    max-width: 80%;
+    justify-self: center;
+  }
+  .equipment-weight-container {
+    @include flex;
+  }
+  .equipment-card {
+    @include flex;
     padding: 0 5px;
-    h4 {
-      font-size: 1.1em;
-      text-align: center;
-      margin: 0;
-      margin-bottom: 3px;
+    input {
+      width: 2.75em;
+      font-size: 0.8em;
     }
-    .equipment-weight-container {
-      @include flex;
-    }
-    .equipment-card {
-      @include flex;
-      padding: 0 5px;
-      input {
-        width: 2.75em;
-        font-size: 0.8em;
-      }
-    }
-    .equipment-unit {
-      padding-left: 3px;
-    }
+  }
+  .equipment-unit {
+    padding-left: 4px;
+    font-size: 0.9em;
   }
 }
 
-.settings-plates {
-  @include flex(flex-start, space-evenly);
-  width: 100% select {
+.plate-group {
+  white-space: nowrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 3px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 1em;
+  cursor: pointer;
+  select {
     background: $background-color;
     font-size: 0.8em;
-    cursor: pointer;
   }
-  .plate-group {
-    white-space: nowrap;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-auto-rows: auto;
-    grid-gap: 5px;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    h4 {
-      font-size: 1.1em;
-      grid-column: 1/3 span;
-      text-align: center;
-      margin: 0;
-      margin-top: 10px;
-      margin-bottom: 5px;
-    }
+  h4 {
+    font-size: 1.1em;
+    grid-column: 1/3 span;
+    text-align: center;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    justify-self: center;
+    padding: 0px 10px;
   }
 }
 
@@ -396,95 +401,38 @@ h3 {
   }
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 800px) and (min-aspect-ratio: 1/1) {
+  // split main content
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "weight canvas"
+      "footer footer";
+  }
+  .weights-container {
+    font-size: 2.3vw; // 'magic' scaling number
+    max-width: initial;
+    padding-left: 5vw;
+    padding-right: 2vw;
+  }
+  // rearrages settings into one row
   .settings-panel {
-    font-size: 1.2em;
+    font-size: 2vw; // 'magic' scaling number
     form {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 100%;
-      max-width: 70vw;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+      max-width: 80vw;
+      margin: auto;
     }
-    input {
-      min-width: 3em;
-    }
+  }
+  .plate-group {
+    justify-self: flex-start;
     h4 {
-      padding: 0;
-      font-size: 1em;
-      font-weight: normal;
-      border-bottom: 1px solid $nav-color;
+      margin: 0;
     }
-  }
-
-  .settings-equipment {
-    height: min-content;
-    .equipment-group {
-      grid-template-rows: auto;
-      padding-bottom: 10px;
-      h4 {
-        font-size: 1.1em;
-      }
-    }
-  }
-
-  .settings-plates {
-    width: 100%;
-    .plate-group {
-      h4 {
-        margin-top: 0;
-        font-size: 1.1em;
-      }
+    select {
+      margin-top: 12px;
     }
   }
 }
-
-// @media only screen and (min-width: 800px) and (min-height: 1080px) {
-//   .grid {
-//     background: $background-color;
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100%;
-//     margin-top: 2.75em;
-//     z-index: 1000;
-//     display: grid;
-//     align-items: flex-start;
-//     justify-content: flex-end;
-//     grid-template-columns: 1fr 1fr;
-//     grid-template-rows: auto 10em;
-//     grid-template-areas:
-//       "calculator canvas"
-//       "footer footer";
-//     transition: 0.5s;
-//   }
-//   .weights-container {
-//     grid-area: calculator;
-//     display: grid;
-//     grid-template-columns: 1fr 1fr 1fr;
-//     grid-template-rows: 1.5fr;
-//     grid-auto-rows: minmax(125px, 1fr);
-//     align-items: center;
-//     justify-content: center;
-//     text-align: center;
-//     max-width: 700px;
-//     min-width: 0;
-//     font-size: 1.5em;
-//   }
-//   .plate-pairs-heading {
-//     padding-bottom: 0;
-//   }
-//   .barbell-canvas-container {
-//     grid-area: canvas;
-//     text-align: right;
-//     .barbell-canvas {
-//       padding: 0;
-//       margin: 0;
-//       grid-column: 1/2;
-//       grid-row: 2;
-//     }
-//   }
-//   .plate-group h4 {
-//     margin-top: 0;
-//   }
-// }

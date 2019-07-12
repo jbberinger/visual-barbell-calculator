@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useContext, useState, useEffect } from 'react';
 import color from '../util/color'
 import { CalculatorContext, plateCountType } from '../context/calculator-context';
-import { SettingsContext, WeightUnit, Warning } from '../context/settings-context';
+import { SettingsContext, WeightUnit } from '../context/settings-context';
 
 const Calculator: React.FC = () => {
   const kgInputColors: any = color.inputText.kg;
   const lbInputColors: any = color.inputText.lb;
   const [calculatorState, setCalculatorState, convertedTotal] = useContext(CalculatorContext);
-  const [settingsState, , warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
+  const [settingsState, , , , currentWeightUnit] = useContext(SettingsContext);
   let plateInputRefs: any[] = [];
   let totalRef: any;
 

@@ -1,6 +1,4 @@
-import React, { useState, useContext, ChangeEvent, useEffect } from 'react';
-import { CalculatorContext } from '../context/calculator-context';
-import { SettingsContext, WeightUnit } from '../context/settings-context';
+import React, { useState, useEffect } from 'react';
 import forkIcon from '../media/github-repo-forked.svg';
 import starIcon from '../media/github-star.svg';
 

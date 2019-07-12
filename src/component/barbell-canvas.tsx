@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useContext } from 'react';
 import Dimension from '../util/dimension';
 import color from '../util/color';
 import { CalculatorContext } from '../context/calculator-context';
-import { SettingsContext, Warning, WeightUnit } from '../context/settings-context';
+import { SettingsContext, WeightUnit } from '../context/settings-context';
 
 type BBCanvasType = {
   dimension: Dimension,
@@ -13,7 +13,7 @@ type BBCanvasType = {
 const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);
-  const [, , warning, setWarning, currentWeightUnit] = useContext(SettingsContext);
+  const [, , , , currentWeightUnit] = useContext(SettingsContext);
 
   const redraw = () => {
     const {
@@ -144,11 +144,6 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
         offset += offsetWidth ? offsetWidth : 0;
       }
 
-      // Warns user there is no room left on the bar.
-      if (offset > relSleeveLength - relCollarTotalLength) {
-        setWarning(Warning.OVERLOAD);
-      }
-
       // Draws large portion of collar.
       strokeAndFillRoundedRect(
         ctx,
@@ -233,7 +228,7 @@ const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
       <canvas
         ref={canvasRef}
         className='barbell-canvas'
-        height={Math.round(screenWidth * (300 / 320))}
+        height={Math.round(screenWidth * (300 / 400))}
         width={Math.round(screenWidth * (300 / 320))}
       />
     </div>

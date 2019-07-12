@@ -6,7 +6,7 @@ import { SettingsContext, WeightUnit } from '../context/settings-context';
 const NavPanel: React.FC = () => {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [, , , , currentWeightUnit, setCurrentWeightUnit] = useContext(SettingsContext);
-  const [calculatorState, , convertedTotal, setConvertedTotal] = useContext(CalculatorContext);
+  const [calculatorState, , , setConvertedTotal] = useContext(CalculatorContext);
 
   // Triggers settings drawer animation
   const handleSettingsButton = () => {

@@ -96,85 +96,80 @@ const SettingsPanel: React.FC<any> = () => {
   return (
     <div className='settings-panel'>
       <form>
-
-        <div className='settings-equipment'>
-          <div className='equipment-group'>
-            <h4>Barbell Weight</h4>
-            <div className='equipment-weight-container'>
-              <EquipmentSettingCard
-                unit='kg'
-                equipment='barbell'
-                currentValue={localEquipmentState.barbell.kg}
-                handleEquipmentInput={
-                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'kg', event)
-                }
-              />
-              <EquipmentSettingCard
-                unit='lb'
-                equipment='barbell'
-                currentValue={localEquipmentState.barbell.lb}
-                handleEquipmentInput={
-                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'lb', event)
-                }
-              />
-            </div>
+        <div className='equipment-group'>
+          <h4>Barbell Weight</h4>
+          <div className='equipment-weight-container'>
+            <EquipmentSettingCard
+              unit='kg'
+              equipment='barbell'
+              currentValue={localEquipmentState.barbell.kg}
+              handleEquipmentInput={
+                (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'kg', event)
+              }
+            />
+            <EquipmentSettingCard
+              unit='lb'
+              equipment='barbell'
+              currentValue={localEquipmentState.barbell.lb}
+              handleEquipmentInput={
+                (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('barbell', 'lb', event)
+              }
+            />
           </div>
-          <div className='equipment-group'>
-            <h4>Collar Weight</h4>
-            <div className='equipment-weight-container'>
-              <EquipmentSettingCard
-                unit='kg'
-                equipment='collar'
-                currentValue={localEquipmentState.collar.kg}
-                handleEquipmentInput={
-                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'kg', event)
-                }
-              />
-              <EquipmentSettingCard
-                unit='lb'
-                equipment='collar'
-                currentValue={localEquipmentState.collar.lb}
-                handleEquipmentInput={
-                  (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'lb', event)
-                }
-              />
-            </div>
+        </div>
+        <div className='equipment-group'>
+          <h4>Collar Weight</h4>
+          <div className='equipment-weight-container'>
+            <EquipmentSettingCard
+              unit='kg'
+              equipment='collar'
+              currentValue={localEquipmentState.collar.kg}
+              handleEquipmentInput={
+                (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'kg', event)
+              }
+            />
+            <EquipmentSettingCard
+              unit='lb'
+              equipment='collar'
+              currentValue={localEquipmentState.collar.lb}
+              handleEquipmentInput={
+                (event: ChangeEvent<HTMLButtonElement>) => handleEquipmentInput('collar', 'lb', event)
+              }
+            />
           </div>
         </div>
 
-        <div className='settings-plates'>
-          <div className='plate-group'>
-            <h4>KG Plate Pairs</h4>
-            {
-              kgPlateList.map(plate => (
-                <PlateSettingCard
-                  handlePlateSelect={
-                    (event: ChangeEvent<HTMLButtonElement>) => handlePlateSelect('kg', plate, event)
-                  }
-                  plateWeight={plate}
-                  unit='kg'
-                  currentValue={plates.kg[plate]}
-                  key={`plateCard${plate}kg`}
-                />
-              ))
-            }
-          </div>
-          <div className='plate-group'>
-            <h4>LB Plate Pairs</h4>
-            {
-              lbPlateList.map(plate => (
-                <PlateSettingCard
-                  handlePlateSelect={
-                    (event: ChangeEvent<HTMLButtonElement>) => handlePlateSelect('lb', plate, event)
-                  }
-                  plateWeight={plate}
-                  unit='lb'
-                  currentValue={plates.lb[plate]}
-                  key={`plateCard${plate}lb`}
-                />
-              ))
-            }
-          </div>
+        <div className='plate-group'>
+          <h4>KG Plate Pairs</h4>
+          {
+            kgPlateList.map(plate => (
+              <PlateSettingCard
+                handlePlateSelect={
+                  (event: ChangeEvent<HTMLButtonElement>) => handlePlateSelect('kg', plate, event)
+                }
+                plateWeight={plate}
+                unit='kg'
+                currentValue={plates.kg[plate]}
+                key={`plateCard${plate}kg`}
+              />
+            ))
+          }
+        </div>
+        <div className='plate-group'>
+          <h4>LB Plate Pairs</h4>
+          {
+            lbPlateList.map(plate => (
+              <PlateSettingCard
+                handlePlateSelect={
+                  (event: ChangeEvent<HTMLButtonElement>) => handlePlateSelect('lb', plate, event)
+                }
+                plateWeight={plate}
+                unit='lb'
+                currentValue={plates.lb[plate]}
+                key={`plateCard${plate}lb`}
+              />
+            ))
+          }
         </div>
 
       </form >
