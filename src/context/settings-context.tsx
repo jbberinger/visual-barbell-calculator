@@ -90,17 +90,38 @@ const initialSettingsState = {
   }
 }
 
-type settingsStateType = typeof initialSettingsState;
+type settingsStateType = typeof defaultSettingsState;
+
+// Retrieves settings from local storage, otherwise inits from default.
+const initializeSettings = (): settingsStateType => {
+  const local = localStorage.getItem('settings');
+  if (local) {
+    return JSON.parse(local, (key, value) =>
+      value === 'Infinity' ? Infinity : value
+    );
+  } else {
+    return initialSettingsState;
+  }
+}
 
 export const SettingsContext = createContext<settingsStateType | any>(undefined);
 
 export const SettingsProvider = (props: any) => {
-  const [settingsState, setSettingsState] = useState<settingsStateType | any>(initialSettingsState);
+  const [settingsState, setSettingsState] = useState<settingsStateType | any>(initializeSettings());
   const [warning, setWarning] = useState<Warning>();
   const [currentWeightUnit, setCurrentWeightUnit] = useState(WeightUnit.LB);
   return (
     <SettingsContext.Provider
-      value={[settingsState, setSettingsState, warning, setWarning, currentWeightUnit, setCurrentWeightUnit]}>
+      value={
+        [
+          settingsState,
+          setSettingsState,
+          warning,
+          setWarning,
+          currentWeightUnit,
+          setCurrentWeightUnit
+        ]
+      }>
       {props.children}
     </SettingsContext.Provider>
   );

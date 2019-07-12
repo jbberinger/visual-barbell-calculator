@@ -9,13 +9,14 @@ import Footer from './component/footer';
 import { CalculatorProvider } from './context/calculator-context';
 import { SettingsProvider } from './context/settings-context';
 
+// Primary parent component.
 const App: React.FC = () => {
   // Calculates canvas width from screen width with constraints.
   //
   // Media query constraints:
   // @media only screen and (min-width: 800px) and (min-aspect-ratio: 1/1)
   const canvasWidthFromScreenWidth = (): number => {
-    return (window.innerWidth > 800 && window.innerHeight < window.innerWidth)
+    return (window.innerWidth >= 800 && window.innerHeight < window.innerWidth)
       ? window.innerWidth / 2
       : window.innerWidth > 315 ? window.innerWidth : 315;
   }

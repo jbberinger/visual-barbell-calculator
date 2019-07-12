@@ -195,8 +195,8 @@ const Calculator: React.FC = () => {
     // protects against double zero total
     if (totalInput !== '00') {
       // displays 0 when cleared
-      if (totalInput === '') {
-        setTotalDisplay('');
+      if (totalInput === '' || totalInput === '0') {
+        setTotalDisplay(totalInput);
         const newPlateCounts: plateCountType = countPlatesFromTotal(plates, 0);
         setPlateDisplay(newPlateCounts);
         setCalculatorState({ total: 0, plateCounts: newPlateCounts });
@@ -226,10 +226,11 @@ const Calculator: React.FC = () => {
             placeholder='0'
             value={totalDisplay}
             style={{ caretColor: 'black' }}
-            onChange={handleTotalInput}
+            onInput={handleTotalInput}
+            id={'total-input'}
             ref={(ref) => totalRef = ref}
           />
-          <span className='total-unit'>{currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb'}</span>
+          <label htmlFor='total-input'><span className='total-unit'>{currentWeightUnit === WeightUnit.KG ? 'kg' : 'lb'}</span></label>
         </div>
         <span className='plate-pairs-heading'>plates per side</span>
       </div>
@@ -274,9 +275,10 @@ const InputCard: React.FC<IInputCardProps> = ({ weight, color, count, handleInpu
         style={{ color: `${color} `, caretColor: `${color} ` }}
         onChange={handleInput}
         name={`${weight} `}
+        id={`plate-${weight}${color}`}
         ref={(ref) => plateInputRefs[weight] = ref}
       />
-      <h3>{weight}<span className='input-unit'></span></h3>
+      <label htmlFor={`plate-${weight}${color}`}><h3>{weight}<span className='input-unit'></span></h3></label>
     </div >
   )
 }

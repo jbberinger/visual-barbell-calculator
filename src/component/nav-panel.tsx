@@ -2,7 +2,8 @@ import React, { useState, useContext, ChangeEvent } from 'react';
 import { CalculatorContext } from '../context/calculator-context';
 import { SettingsContext, WeightUnit } from '../context/settings-context';
 
-// Navigation for switching between weight units and triggering the settings drawer animation
+// Navigation for switching between weight units and 
+// triggering the settings drawer animation.
 const NavPanel: React.FC = () => {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [, , , , currentWeightUnit, setCurrentWeightUnit] = useContext(SettingsContext);
@@ -37,7 +38,6 @@ const NavPanel: React.FC = () => {
     } else {
       convertedTotal = Math.round(parseFloat(total) * kgToLbFactor * 100) / 100;
     }
-
     setConvertedTotal(convertedTotal);
   }
 
@@ -67,7 +67,7 @@ const NavPanel: React.FC = () => {
           kg
         </label>
       </form>
-      <button className='nav-button' onClick={handleSettingsButton}>settings</button>
+      <button className='nav-button' onClick={handleSettingsButton}>equipment</button>
     </nav>
   )
 }

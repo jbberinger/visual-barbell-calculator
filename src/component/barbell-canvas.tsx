@@ -9,7 +9,7 @@ type BBCanvasType = {
   screenWidth: number,
 }
 
-// Draws loaded barbell to scale
+// Draws loaded barbell to scale using Canvas element.
 const BarbellCanvas: React.FC<BBCanvasType> = ({ dimension, screenWidth }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [calculatorState] = useContext(CalculatorContext);

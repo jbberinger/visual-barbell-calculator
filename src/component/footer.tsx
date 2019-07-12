@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import forkIcon from '../media/github-repo-forked.svg';
 import starIcon from '../media/github-star.svg';
 
+// Footer component which links to GitHub repo and displays repo stats.
 const Footer: React.FC = () => {
   const [repoInfo, setRepoInfo] = useState([0, 0]);
 
-  // Fetches repo information
+  // Fetches repo information from GitHub.
   useEffect(() => {
     const fetchRepoInfo = async (): Promise<number[]> => {
       const url = 'https://api.github.com/repos/jbberinger/visual-barbell-calculator';
@@ -14,7 +15,6 @@ const Footer: React.FC = () => {
       });
       const result = await fetch(url, { headers: headers });
       const json = await result.json();
-      console.log(json);
       return [json.stargazers_count, json.forks_count];
     };
 
@@ -37,9 +37,6 @@ const Footer: React.FC = () => {
       </a>
     </footer>
   )
-
 }
-
-//a8084076dcaa9195477b533db7c0a27a49b38977
 
 export default Footer;

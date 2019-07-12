@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans|Oxygen+Mono&display=swap");
+// @import url("https://fonts.googleapis.com/css?family=Noto+Sans&display=swap");
 
 //// variables ////
 
@@ -204,7 +204,8 @@ h3 {
 .barbell-canvas-container {
   grid-area: canvas;
   text-align: right;
-  padding: 10px 0;
+  padding-top: 35px;
+  padding-bottom: 50px;
   .barbell-canvas {
     padding: 0;
     margin: 0;
@@ -401,6 +402,7 @@ h3 {
   }
 }
 
+// For wide screens such as desktops and devices in landscape mode
 @media only screen and (min-width: 800px) and (min-aspect-ratio: 1/1) {
   // split main content
   .grid {
@@ -409,12 +411,14 @@ h3 {
     grid-template-areas:
       "weight canvas"
       "footer footer";
+    align-items: flex-start;
   }
   .weights-container {
     font-size: 2.3vw; // 'magic' scaling number
     max-width: initial;
     padding-left: 5vw;
     padding-right: 2vw;
+    padding-bottom: 50px;
   }
   // rearrages settings into one row
   .settings-panel {
@@ -434,5 +438,16 @@ h3 {
     select {
       margin-top: 12px;
     }
+  }
+  .barbell-canvas-container {
+    padding-top: 5.5vw;
+  }
+}
+
+// For unusually tall screens
+@media only screen and (max-aspect-ratio: 320/825) {
+  .grid {
+    grid-template-rows: min-content auto auto;
+    align-items: flex-start;
   }
 }

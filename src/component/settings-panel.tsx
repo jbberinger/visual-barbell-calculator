@@ -1,4 +1,4 @@
-import React, { useContext, ChangeEvent, useState } from 'react';
+import React, { useContext, ChangeEvent, useState, useEffect } from 'react';
 import { SettingsContext, defaultSettingsState } from '../context/settings-context';
 
 // Settings drawer to control plates available and barbell/collar weights
@@ -37,18 +37,21 @@ const SettingsPanel: React.FC<any> = () => {
   const handleEquipmentInput = (equipment: string, unit: string, event: ChangeEvent<HTMLButtonElement>) => {
     const kgToLbFactor = 2.20462262;
     let value = event.target.value;
-
     const updatedEquipmentState = { ...localEquipmentState };
+    const updatedSettingsState = { ...settingsState };
     if (value !== '00') {
       // displays 0 when cleared
       if (value === '' || value === '0') {
-        updatedEquipmentState[equipment].kg = '0';
-        updatedEquipmentState[equipment].lb = '0';
+        updatedEquipmentState[equipment].kg = value;
+        updatedEquipmentState[equipment].lb = value;
         setLocalEquipmentState(updatedEquipmentState);
+        updatedSettingsState.equipment[equipment].kg = 0;
+        updatedSettingsState.equipment[equipment].lb = 0;
+        setSettingsState(updatedSettingsState);
       }
       // prefixes 0 to decimal numbers < 0
-      else if (value === '0.') {
-        updatedEquipmentState[equipment][unit] = '0.';
+      else if (value.slice(0, 2) === '0.' && parseFloat(value) === 0) {
+        updatedEquipmentState[equipment][unit] = value;
         setLocalEquipmentState(updatedEquipmentState);
       }
       // checks for valid decimal number input
@@ -57,7 +60,6 @@ const SettingsPanel: React.FC<any> = () => {
         if (value[0] === '0' && value[1] !== '.') {
           value = value.slice(1);
         }
-        const updatedSettingsState = { ...settingsState };
         // checks if input is the start of a decimal
         // prevents conversion if input ends with a period
         if (value[value.length - 1] === '.') {
@@ -68,16 +70,18 @@ const SettingsPanel: React.FC<any> = () => {
           if (unit === 'kg') {
             convertedValue = Math.round(parseFloat(value) * kgToLbFactor * 100) / 100;
             updatedEquipmentState[equipment].lb = convertedValue.toString();
+            updatedSettingsState.equipment[equipment].kg = parseFloat(value);
             updatedSettingsState.equipment[equipment].lb = convertedValue;
           } else {
             convertedValue = Math.round(parseFloat(value) / kgToLbFactor * 100) / 100;
             updatedEquipmentState[equipment].kg = convertedValue.toString();
+            updatedSettingsState.equipment[equipment].lb = parseFloat(value);
             updatedSettingsState.equipment[equipment].kg = convertedValue;
           }
           updatedEquipmentState[equipment][unit] = value;
+          console.log(updatedSettingsState);
           setSettingsState(updatedSettingsState);
         }
-
         setLocalEquipmentState(updatedEquipmentState);
       }
     }
@@ -90,8 +94,20 @@ const SettingsPanel: React.FC<any> = () => {
     updatedSettings.equipment.barbell = { ...defaultSettingsState.equipment.barbell };
     updatedSettings.plates.kg = { ...defaultSettingsState.plates.kg };
     updatedSettings.plates.lb = { ...defaultSettingsState.plates.lb };
+    setLocalEquipmentState({
+      barbell: { ...defaultSettingsState.equipment.barbell },
+      collar: { ...defaultSettingsState.equipment.collar },
+    }
+    )
     setSettingsState(updatedSettings);
   }
+
+  // Updates local storage in browser
+  useEffect(() => {
+    localStorage.setItem('settings', JSON.stringify(settingsState, (key, value) =>
+      value === Infinity ? 'Infinity' : value
+    ));
+  }, [settingsState])
 
   return (
     <div className='settings-panel'>
@@ -191,7 +207,7 @@ const EquipmentSettingCard: React.FC<any> = ({ unit, equipment, currentValue, ha
             type='text'
             value={currentValue}
             placeholder='0'
-            onChange={handleEquipmentInput}
+            onInput={handleEquipmentInput}
           />
           <span className='equipment-unit'>{unit}</span>
         </label>
