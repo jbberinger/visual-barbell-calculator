@@ -4,7 +4,7 @@
 Visual Barbell is a modern web application for visualizing and calculating barbell weights.
 
 * **Equipment:** Customize plate counts and equipment weights.
-* **Units:** Choose between lbs and kgs, and convert between them.
+* **Units:** Choose between lb and kg, and convert between them.
 * **Dimensions:** Dimensions and colors are based on real equipment.
 * **Persistent Settings:** Equipment settings instantly save and persist between sessions.
 
