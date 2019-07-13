@@ -23,5 +23,5 @@ Visual Barbell is a modern web application for visualizing and calculating barbe
 **Rounding**
 * Plate counts are conservative and will always round down.
 
-## Screenshots
+## Screenshots 🤳
 <img src="https://i.imgur.com/UhwyZSt.png" height="350"> <img src="https://i.imgur.com/JFOxGiv.png" height="350">
