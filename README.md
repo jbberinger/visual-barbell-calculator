@@ -1,33 +1,27 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/abaa91d3-0289-4252-988c-9433a93a236d/deploy-status)](https://app.netlify.com/sites/sharp-leakey-173f74/deploys)
+# [Visual Barbell](https://www.visualbarbell.com/) 🏋 🏋️‍♀️ [![Netlify Status](https://api.netlify.com/api/v1/badges/abaa91d3-0289-4252-988c-9433a93a236d/deploy-status)](https://app.netlify.com/sites/sharp-leakey-173f74/deploys) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jbberinger/visual-barbell-calculator/blob/master/public/LICENSE.txt)
 
-[Live Build](https://www.visualbarbell.com/)
-# Visual Barbell Calculator 🏋 🏋️‍♀️
+### Built with: [React](https://reactjs.org/) &#9653; [TypeScript](https://www.typescriptlang.org/) &#9653; [SCSS](https://sass-lang.com/)
+Visual Barbell is a modern web application for visualizing and calculating barbell weights.
 
-## A modern barbell calculator for the web
+* **Equipment:** Customize plate counts and equipment weights.
+* **Units:** Choose between lbs and kgs, and convert between them.
+* **Dimensions:** Dimensions and colors are based on real equipment.
+* **Persistent Settings:** Equipment settings instantly save and persist between sessions.
 
-### Built with:
+## Tips 💪
+**Plates are calculated in pairs**
 
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [SCSS](https://sass-lang.com/)
+* Plate counts are calculated in pairs and match the barbell drawn on the screen.
+  * 225lb = (2 x 45lb) per side + 45lb barbell
+  * 327.5kg = (6 x 25kg + 1 x 1.25kg + 2.5kg collar) per side + 20kg barbell
 
-### To-do
+**Equipment**
 
-- [x] Two-way binding between total weight and plate counts
-- [x] Barbell animation reacts to all calculator inputs
-- [x] Navigation
-  - [x] Settings button triggers drawer animation
-  - [x] Ability to switch between kg and lb
-- [x] Settings drawer
-  - [x] Slides in from under navigation menu
-  - [x] Specify barbell and collar weights
-  - [x] Specify number of plates available
-  - [x] Live update inputs
-- [x] Warnings
-- [x] Optimized UI on desktop
-- [x] Canvas rect shapes replaced with custom rounded-rect shapes
-- [ ] Improve accessibility
-- [ ] Cache settings
+* The default plate counts and equipment weights are based on those commonly available in commercial gyms.
+* Can be customized to meet the needs of powerlifters, weightlifters, and those with limited equipment.
 
-### Preview
-<img src="https://i.imgur.com/IyQgybQ.png" width="300">
+**Rounding**
+* Plate counts are conservative and will always round down.
+
+## Screenshots
+<img src="https://i.imgur.com/UhwyZSt.png" height="350"> <img src="https://i.imgur.com/JFOxGiv.png" height="350">
