@@ -1,6 +1,6 @@
 # [Visual Barbell](https://www.visualbarbell.com/) 🏋 🏋️‍♀️ [![Netlify Status](https://api.netlify.com/api/v1/badges/abaa91d3-0289-4252-988c-9433a93a236d/deploy-status)](https://app.netlify.com/sites/sharp-leakey-173f74/deploys) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jbberinger/visual-barbell-calculator/blob/master/public/LICENSE.txt)
 
-### Built with: [React](https://reactjs.org/) &#9653; [TypeScript](https://www.typescriptlang.org/) &#9653; [SCSS](https://sass-lang.com/)
+#### Built with: [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/) + [SCSS](https://sass-lang.com/)
 Visual Barbell is a modern web application for visualizing and calculating barbell weights.
 
 * **Equipment:** Customize plate counts and equipment weights.
@@ -24,4 +24,4 @@ Visual Barbell is a modern web application for visualizing and calculating barbe
 * Plate counts are conservative and will always round down.
 
 ## Screenshots 🤳
-<img src="https://i.imgur.com/UhwyZSt.png" height="350"> <img src="https://i.imgur.com/JFOxGiv.png" height="350">
+<img src="https://i.imgur.com/UhwyZSt.png" height="350"> <img src="https://i.imgur.com/JFOxGiv.png" width="500">
